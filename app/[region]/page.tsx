@@ -91,69 +91,43 @@ export default async function RegionPage({ params }: Props) {
       <nav className="breadcrumb" aria-label="breadcrumb"><Link href="/">홈</Link> › {region.name}</nav>
 
       <article>
-        <div className="conversion-zone region-conversion">
-          <header className="hero compact region-hero conversion-hero">
-            <p className="eyebrow">{region.province} · 1:1 ENGLISH</p>
-            <h1>{region.name} 영어회화,<br />목표에 맞는 수업부터 찾으세요</h1>
-            <p>{region.name}에서 영어수업을 찾고 있다면 수업 횟수보다 먼저 현재 수준과 영어가 필요한 목적을 확인하는 것이 좋습니다.</p>
-            <div className="hero-links primary-actions">
-              <a href="#quick-fit">나에게 맞는 방향 보기</a>
-              <a href="/#trial">무료 시범수업 안내</a>
+        <div className="conversion-zone region-conversion v3-conversion">
+          <header className="lead-hero region-lead-hero">
+            <div className="lead-hero-inner">
+              <p className="eyebrow">{region.province} · 1:1 ENGLISH</p>
+              <h1>{region.name} 영어회화,<br />열심히 해도 말이 안 나온다면</h1>
+              <p className="lead-copy">수업 횟수를 늘리기 전에 지금 어디에서 막히는지 먼저 확인해보세요. 왕초보·성인·직장인 회화부터 시험영어까지 현재 수준과 목표에 맞춰 방향을 안내합니다.</p>
+              <div className="lead-actions"><Link className="lead-primary" href="/#trial">무료 시범수업 신청하기</Link><Link className="lead-secondary" href="/#consult">전화문의</Link></div>
+              <div className="lead-proof"><span>{region.name} 1:1 상담</span><span>현재 수준 확인</span><span>목표별 수업 설계</span></div>
             </div>
           </header>
 
-          <section id="quick-fit" className="quick-fit-section">
-            <div className="section-heading compact-heading">
-              <p className="eyebrow">QUICK CHECK</p>
-              <h2>지금 가장 가까운 상황을 골라보세요</h2>
-            </div>
-            <div className="quick-goal-grid three-up">
-              {audience.map((item) => (
-                <a className="quick-goal-card" href="#how-to-choose" key={item.title}>
-                  <strong>{item.title}</strong>
-                  <span>{item.body}</span>
-                  <em>학습 방향 확인 →</em>
-                </a>
-              ))}
+          <section className="conversion-story">
+            <div className="section-heading conversion-heading"><p className="eyebrow">COMMON WORRIES</p><h2>이런 고민이라면 먼저 상담해보세요</h2></div>
+            <div className="pain-grid three">
+              <div className="pain-card"><strong>영어는 읽는데 말이 안 나와요</strong><p>아는 표현을 실제 발화로 연결하는 연습이 필요한 경우가 많습니다.</p></div>
+              <div className="pain-card"><strong>어떤 수업이 맞는지 모르겠어요</strong><p>회화·오픽·토스·유학 준비는 목표에 따라 수업 방향이 달라집니다.</p></div>
+              <div className="pain-card"><strong>내 수준으로 시작해도 될까요?</strong><p>현재 수준을 먼저 확인하면 시작점과 필요한 연습을 더 정확히 정할 수 있습니다.</p></div>
             </div>
           </section>
 
-          {availableCourses.length > 0 && (
-            <section className="course-picker-section">
-              <div className="section-heading compact-heading">
-                <p className="eyebrow">GOAL</p>
-                <h2>시험·목적이 정해져 있다면 바로 확인하세요</h2>
-              </div>
-              <div className="compact-link-grid">
-                {availableCourses.slice(0, 6).map((course) => (
-                  <Link key={course.slug} href={`/${region.slug}/${course.slug}`}>
-                    <strong>{course.name}</strong><span>→</span>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-
-          <section className="conversion-panel">
-            <div>
-              <p className="eyebrow">1:1 LEVEL CHECK</p>
-              <h2>수업을 고르기 전에 현재 수준부터 확인하세요</h2>
-              <p>목표, 가능한 시간, 현재 발화 수준을 기준으로 우선순위를 정하면 불필요한 시행착오를 줄일 수 있습니다.</p>
-            </div>
-            <Link className="primary-button" href="/#trial">무료 시범수업 신청하기</Link>
+          <section className="conversion-steps">
+            <div className="step-strip"><div><b>01</b><strong>수준 확인</strong></div><div><b>02</b><strong>목표 확인</strong></div><div><b>03</b><strong>맞는 수업 제안</strong></div></div>
           </section>
+
+          <section className="conversion-final compact-final"><div><p className="eyebrow">FREE TRIAL</p><h2>수업을 정하기 전에 먼저 확인해보세요</h2><p>현재 수준과 목표를 바탕으로 필요한 학습 방향부터 안내합니다.</p></div><Link className="lead-primary" href="/#trial">무료 시범수업 신청하기</Link></section>
         </div>
 
-        <div className="seo-zone region-seo-zone">
+        <div className="seo-zone region-seo-zone seo-tail">
           <section id="how-to-choose" className="prose-section seo-reading-section">
-            <p className="eyebrow">SEO GUIDE 01</p>
+            
             <h2>{region.name} 영어회화, 수업부터 정하기 전에 목표를 먼저 확인하세요</h2>
             <p>{custom?.intro ?? '영어회화는 수업 횟수만 늘리기보다 현재 듣기·문장 구성·발화 수준과 실제 영어가 필요한 상황을 먼저 구분하는 것이 중요합니다. 기초 회화, 업무 영어, 시험 준비처럼 목표가 달라지면 필요한 수업 방식도 달라집니다.'}</p>
             <p>문법과 독해는 어느 정도 가능하지만 말할 때 문장이 나오지 않는 사람이라면 새로운 교재를 계속 배우기보다 알고 있는 표현을 입 밖으로 꺼내는 연습이 더 필요할 수 있습니다. 반대로 단어와 기본 문장 구조가 익숙하지 않다면 프리토킹보다 짧은 문장을 정확하게 만들어 말하는 단계가 먼저입니다.</p>
           </section>
 
           <section className="soft-section seo-block">
-            <div className="section-heading"><p className="eyebrow">SEO GUIDE 02</p><h2>1:1 영어수업을 고를 때 확인하면 좋은 세 가지</h2></div>
+            <div className="section-heading"><h2>1:1 영어수업을 고를 때 확인하면 좋은 세 가지</h2></div>
             <div className="check-list">
               {checkpoints.map((item, index) => (
                 <div className="check-item" key={item.title}>
@@ -165,7 +139,7 @@ export default async function RegionPage({ params }: Props) {
           </section>
 
           <section id="courses" className="seo-block">
-            <div className="section-heading"><p className="eyebrow">SEO GUIDE 03</p><h2>점수가 필요하다면 시험에 맞는 준비가 필요합니다</h2></div>
+            <div className="section-heading"><h2>점수가 필요하다면 시험에 맞는 준비가 필요합니다</h2></div>
             <p className="section-intro">취업이나 이직을 위한 말하기 시험은 일반 회화와 평가 방식이 다릅니다. 목표 시험이 정해져 있다면 회화 실력을 키우는 것과 동시에 문제 유형과 평가 기준에 맞춘 훈련을 병행하는 편이 효율적입니다.</p>
             {availableCourses.length > 0 && (
               <div className="grid compact-course-grid">

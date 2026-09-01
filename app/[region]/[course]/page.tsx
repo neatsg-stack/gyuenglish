@@ -72,37 +72,34 @@ export default async function RegionCoursePage({ params }: Props) {
       <JsonLd data={breadcrumbLd} /><JsonLd data={faqLd} />
       <nav className="breadcrumb"><Link href="/">홈</Link> › <Link href={`/${region.slug}`}>{region.name}</Link> › {course.name}</nav>
       <article>
-        <div className="conversion-zone course-conversion">
-          <header className="hero compact region-hero conversion-hero">
-            <p className="eyebrow">{content.eyebrow}</p>
-            <h1>{content.h1}</h1>
-            <p>{content.intro}</p>
-            <div className="hero-links primary-actions">
-              <a href="#course-check">준비 방향 확인하기</a>
-              <Link href="/#trial">무료 시범수업 안내</Link>
+        <div className="conversion-zone course-conversion v3-conversion">
+          <header className="lead-hero region-lead-hero">
+            <div className="lead-hero-inner">
+              <p className="eyebrow">{content.eyebrow}</p>
+              <h1>{content.h1}</h1>
+              <p className="lead-copy">혼자 준비하면서 방향이 맞는지 불안하다면, 먼저 현재 수준과 목표부터 확인해보세요. 필요한 부분부터 우선순위를 정해 안내합니다.</p>
+              <div className="lead-actions"><Link className="lead-primary" href="/#trial">무료 시범수업 신청하기</Link><Link className="lead-secondary" href="/#consult">전화문의</Link></div>
+              <div className="lead-proof"><span>1:1 수준 확인</span><span>{course.name} 목표 설계</span><span>실전 피드백</span></div>
             </div>
           </header>
 
-          <section id="course-check" className="quick-fit-section">
-            <div className="section-heading compact-heading"><p className="eyebrow">QUICK CHECK</p><h2>수업 전에 네 가지를 먼저 확인하세요</h2></div>
-            <div className="metric-card-grid">
-              <div className="metric-card"><span>01</span><strong>현재 수준</strong><p>실제로 말하거나 쓰는 수행 수준</p></div>
-              <div className="metric-card"><span>02</span><strong>목표</strong><p>필요한 점수·등급·사용 목적</p></div>
-              <div className="metric-card"><span>03</span><strong>기간</strong><p>시험·출국·입학까지 남은 시간</p></div>
-              <div className="metric-card"><span>04</span><strong>연습</strong><p>직접 수행하고 피드백 받는 시간</p></div>
+          <section className="conversion-story">
+            <div className="section-heading conversion-heading"><p className="eyebrow">DOES THIS SOUND FAMILIAR?</p><h2>이런 상태라면 준비 방법부터 바꿔볼 수 있습니다</h2></div>
+            <div className="pain-grid three">
+              <div className="pain-card"><strong>혼자 해도 답이 맞는지 모르겠어요</strong><p>현재 수행 수준을 확인하고 바로 교정받는 구조가 필요한 경우가 많습니다.</p></div>
+              <div className="pain-card"><strong>시험·목표일은 가까운데 불안해요</strong><p>남은 기간에 맞춰 점수와 결과에 직접 연결되는 부분부터 우선순위를 정합니다.</p></div>
+              <div className="pain-card"><strong>외운 건 많은데 실전에서 막혀요</strong><p>설명을 더 듣기보다 실제로 말하고 쓰고 다시 수정하는 시간이 중요합니다.</p></div>
             </div>
           </section>
 
-          <section className="conversion-panel">
-            <div><p className="eyebrow">1:1 LEVEL CHECK</p><h2>{content.ctaTitle}</h2><p>{content.ctaText}</p></div>
-            <Link className="primary-button" href="/#trial">무료 시범수업 신청하기</Link>
-          </section>
+          <section className="conversion-steps"><div className="step-strip"><div><b>01</b><strong>현재 수준</strong></div><div><b>02</b><strong>목표·기간</strong></div><div><b>03</b><strong>학습 방향</strong></div></div></section>
+          <section className="conversion-final compact-final"><div><p className="eyebrow">FREE TRIAL</p><h2>{content.ctaTitle}</h2><p>{content.ctaText}</p></div><Link className="lead-primary" href="/#trial">무료 시범수업 신청하기</Link></section>
         </div>
 
-        <div className="seo-zone course-seo-zone">
+        <div className="seo-zone course-seo-zone seo-tail">
           {content.sections.map((section, index) => (
             <section key={section.title} className={index % 2 === 1 ? 'soft-section prose-section seo-block' : 'prose-section seo-reading-section'}>
-              <div className="section-heading"><p className="eyebrow">SEO GUIDE {String(index + 1).padStart(2, '0')}</p><h2>{section.title}</h2></div>
+              <div className="section-heading"><h2>{section.title}</h2></div>
               {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
               {section.bullets && <ul className="seo-bullets">{section.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>}
             </section>
