@@ -1,0 +1,4 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
+export const metadata: Metadata={title:'토플 스피킹 1:1 준비',description:'토플 스피킹 준비 방법과 1:1 피드백에서 확인할 기준을 안내합니다.',alternates:{canonical:'/toefl/speaking'}}
+export default function Page(){return <main><section className="hero compact"><p className="eyebrow">TOEFL · SPEAKING</p><h1>토플 스피킹, 점수를 바꾸는 연습은 무엇이 다를까요?</h1><p>현재 수행 수준과 평가 기준을 연결해 연습해야 합니다. 단순한 템플릿 암기보다 실제 답변을 만들고 피드백 후 다시 수행하는 과정이 중요합니다.</p></section><section className="prose-section"><h2>토플 스피킹에서 먼저 확인할 것</h2><p>목표 점수와 현재 점수의 차이를 영역별로 나누고 반복되는 약점을 확인하세요. Writing은 논리와 문장 정확성, Speaking은 질문 이해와 답변 전개·유창성을 함께 봐야 합니다.</p><p>시험까지 남은 기간이 짧다면 모든 내용을 새로 배우기보다 실전에서 반복되는 오류를 줄이는 데 우선순위를 두는 편이 효율적입니다.</p><div className="related-links"><Link href="/toefl">토플 전체 안내</Link><Link href="/english-writing">영어 라이팅</Link></div></section></main>}

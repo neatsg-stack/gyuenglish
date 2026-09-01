@@ -191,7 +191,7 @@ export default async function RegionPage({ params }: Props) {
         {custom && (
           <section>
             <div className="section-heading">
-              <p className="eyebrow">SUWON AREA</p>
+              <p className="eyebrow">LOCAL AREA</p>
               <h2>{region.name} 주요 생활권에서도 목적에 맞춰 준비할 수 있습니다</h2>
             </div>
             <p>{custom.localNote}</p>

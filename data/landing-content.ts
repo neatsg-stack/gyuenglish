@@ -1,85 +1,48 @@
-export type LandingContent = {
-  region: string
-  course: string
-  title: string
-  description: string
-  eyebrow: string
-  h1: string
-  intro: string
-  targetKeywords: string[]
-  sections: { title: string; paragraphs: string[]; bullets?: string[] }[]
-  faq: { q: string; a: string }[]
-  related: { href: string; label: string }[]
-  ctaTitle: string
-  ctaText: string
+import { getRegion } from './regions'
+import { getCourse } from './courses'
+import { isLandingPage } from './landing-pages'
+
+export type LandingContent = { title:string; description:string; eyebrow:string; h1:string; intro:string; targetKeywords:string[]; sections:{title:string; paragraphs:string[]; bullets?:string[]}[]; faq:{q:string;a:string}[]; related:{href:string;label:string}[]; ctaTitle:string;ctaText:string }
+
+const courseAngles: Record<string, {goal:string; score:string; practice:string; second:string}> = {
+  'english-conversation': {goal:'실제 대화에서 문장을 바로 꺼내는 것',score:'생활·업무 상황에서 필요한 표현을 안정적으로 사용하는 것',practice:'질문-답변-확장 발화',second:'성인·직장인·왕초보'},
+  opic:{goal:'질문을 듣고 자신의 경험을 자연스럽게 이어 말하는 것',score:'IM3·IH·AL 등 목표 등급',practice:'주제별 답변 구성과 돌발 질문 대응',second:'오픽학원·오픽과외'},
+  'toeic-speaking':{goal:'제한 시간 안에 유형에 맞는 답변을 완성하는 것',score:'목표 점수와 레벨',practice:'유형별 답변 구조와 녹음 피드백',second:'토익스피킹학원·토익스피킹과외'},
+  toeic:{goal:'LC와 RC에서 반복되는 약점을 줄이는 것',score:'700·800·900 등 목표 점수',practice:'파트별 오답 원인 분석과 시간 관리',second:'토익학원·토익과외'},
+  ielts:{goal:'네 영역의 현재 밴드와 목표 밴드 차이를 줄이는 것',score:'6.0·6.5·7.0 등 목표 Band',practice:'Speaking 발화와 Writing 논리·첨삭',second:'아이엘츠학원·아이엘츠과외'},
+  toefl:{goal:'아카데믹 영어를 읽고 듣고 말하고 쓰는 통합 능력을 높이는 것',score:'지원 학교에 필요한 목표 점수',practice:'Speaking·Writing의 근거 구성과 시간 관리',second:'토플학원·토플과외'},
+  gtelp:{goal:'목표 점수에 필요한 문법·청취·독해 점수를 효율적으로 확보하는 것',score:'G-TELP Level 2와 65점 등 목표',practice:'빈출 문법과 영역별 시간 배분',second:'지텔프학원·지텔프과외'},
+  'english-writing':{goal:'목적에 맞는 논리와 문장으로 글을 완성하는 것',score:'에세이·아카데믹·시험 Writing 목적',practice:'구조 설계-작성-첨삭-재작성',second:'영어라이팅·영어에세이 첨삭'},
+  'english-interview':{goal:'예상 질문에 자신의 경험을 영어로 설득력 있게 전달하는 것',score:'취업·외국계·입학 인터뷰 목적',practice:'답변 구조와 꼬리질문 실전 연습',second:'영어면접·영어인터뷰'},
+  'international-school':{goal:'학교 수업과 입학 과정에서 필요한 영어를 준비하는 것',score:'학년·학교·입학 일정에 맞는 목표',practice:'Speaking·Writing·Interview를 목적별로 분리',second:'국제학교 영어·입학준비'},
+  'study-abroad':{goal:'출국 이후 실제 학업과 생활에서 필요한 영어를 준비하는 것',score:'출국 시점과 학교 요구 수준',practice:'회화·아카데믹 Writing·Interview',second:'유학영어·출국 전 영어'}
 }
 
-export const landingContent: LandingContent[] = [
-  {
-    region: 'suwon',
-    course: 'opic',
-    title: '수원 오픽 1:1 수업 | IM3·IH 목표 준비',
-    description: '수원 오픽 준비를 시작한다면 현재 말하기 수준과 목표 등급부터 확인하세요. IM3·IH 목표별 답변 구성, 발화 연습, 실전 대비 방향을 안내합니다.',
-    eyebrow: '수원 · OPIc',
-    h1: '수원 오픽 1:1 수업, 목표 등급에 맞춰 준비하세요',
-    intro: '오픽은 영어 지식을 많이 외우는 것보다 질문을 듣고 자신의 경험과 생각을 자연스럽게 이어 말하는 능력이 중요합니다. 수원에서 오픽 수업이나 과외를 찾고 있다면 먼저 현재 발화 수준, 목표 등급, 시험까지 남은 기간을 구분해 준비 방향을 정하는 것이 좋습니다.',
-    targetKeywords: ['수원 오픽', '수원 오픽학원', '수원 오픽과외', '수원 오픽수업', '오픽 IM3', '오픽 IH'],
-    sections: [
-      {
-        title: '오픽 준비에서 먼저 확인해야 할 것은 현재 발화 수준입니다',
-        paragraphs: [
-          '같은 IH 목표라도 영어 문장을 거의 바로 만들 수 있는 학습자와 단어를 조합해 짧게 답하는 학습자의 준비 과정은 달라야 합니다. 처음에는 문법 문제를 얼마나 맞히는지보다 익숙한 주제에 대해 30초에서 1분 정도 스스로 말을 이어갈 수 있는지 확인하는 편이 실전 준비에 도움이 됩니다.',
-          '말하기가 아직 어려운 단계라면 긴 모범답안을 통째로 암기하기보다 자주 사용하는 문장 구조와 연결 표현을 먼저 익히고, 자신의 실제 경험으로 답변을 바꾸는 연습이 필요합니다. 반대로 기본적인 발화가 가능하다면 답변의 구체성, 시제 변화, 비교와 이유 설명, 돌발 질문 대응을 중심으로 다듬는 편이 효율적입니다.'
-        ]
-      },
-      {
-        title: 'IM3와 IH 목표는 연습의 초점이 달라질 수 있습니다',
-        paragraphs: [
-          'IM3를 목표로 하는 경우에는 질문 의도를 놓치지 않고 익숙한 주제에서 답변을 안정적으로 완성하는 것이 우선입니다. 집, 여가, 음악, 여행처럼 자주 등장하는 소재를 이용해 시작-설명-느낌이나 이유로 이어지는 기본 흐름을 반복해서 말해보는 것이 좋습니다.',
-          'IH를 목표로 한다면 단순한 정보 나열에서 벗어나 상황을 구체적으로 묘사하고 과거 경험이나 예상치 못한 문제를 자연스럽게 설명하는 연습까지 필요합니다. 중요한 것은 어려운 표현을 많이 넣는 것이 아니라 질문에 맞는 내용을 충분히 전개하면서도 발화가 지나치게 끊기지 않도록 만드는 것입니다.'
-        ],
-        bullets: ['IM3: 기본 질문에 안정적으로 답변 완성', 'IH: 구체적인 경험·이유·비교를 포함한 답변 확장', '공통: 암기 티를 줄이고 자신의 표현으로 바꾸는 연습']
-      },
-      {
-        title: '오픽학원과 1:1 수업을 비교할 때 볼 부분',
-        paragraphs: [
-          '수원 오픽학원이나 오픽과외를 비교할 때 수업 형태 자체보다 내가 실제로 말하는 시간이 얼마나 확보되는지 확인해보세요. 말하기 시험은 설명을 듣는 시간만으로 실력이 확인되기 어렵기 때문에 답변을 직접 말하고, 녹음하거나 피드백을 받아 다시 말하는 과정이 중요합니다.',
-          '특히 단기간 시험을 준비한다면 모든 주제를 같은 비중으로 공부하기보다 사전 설문에서 선택할 주제, 자주 틀리는 문장, 답변이 막히는 유형을 먼저 찾아 연습량을 배분하는 것이 효율적입니다.'
-        ]
-      },
-      {
-        title: '스크립트는 외우는 자료보다 말하기 재료로 활용하세요',
-        paragraphs: [
-          '스크립트 자체가 나쁜 것은 아닙니다. 문제는 긴 답변을 그대로 암기한 뒤 질문이 조금만 달라져도 대응하지 못하는 경우입니다. 하나의 답변을 만든 뒤 인물, 장소, 시점, 이유를 바꿔 여러 질문에 다시 말해보면 같은 표현을 실제 발화 도구로 전환하기 쉽습니다.',
-          '예를 들어 카페 경험을 준비했다면 장소 묘사에만 사용하지 말고 친구와 있었던 일, 기억에 남는 경험, 최근 변화 같은 질문으로 변형해보는 식입니다. 이렇게 연습하면 준비하지 않은 질문에서도 이미 익힌 표현을 조합하기 쉬워집니다.'
-        ]
-      },
-      {
-        title: '수원에서 화상 1:1 오픽을 준비할 때의 장점',
-        paragraphs: [
-          '오픽은 컴퓨터를 통해 질문을 듣고 혼자 답변하는 시험이기 때문에 온라인 수업에서도 듣기-답변-피드백-재답변의 실전 흐름을 충분히 만들 수 있습니다. 이동 시간을 줄이면서 수업 시간을 발화와 피드백에 집중하고 싶은 성인이나 직장인에게 특히 활용하기 좋은 방식입니다.',
-          '영통, 광교, 인계동, 권선, 장안, 팔달 등 수원 내 생활권과 관계없이 같은 방식으로 수업을 진행할 수 있으므로 위치보다 가능한 시간과 목표에 맞는 수업 설계를 우선해서 비교하는 것이 좋습니다.'
-        ]
-      }
+export function getLandingContent(regionSlug:string, courseSlug:string): LandingContent | undefined {
+  if(!isLandingPage(regionSlug,courseSlug)) return undefined
+  const region=getRegion(regionSlug); const course=getCourse(courseSlug); const angle=courseAngles[courseSlug]
+  if(!region||!course||!angle) return undefined
+  const areaText=region.localAreas.slice(0,3).join('·')
+  return {
+    title:`${region.name} ${course.name} 1:1 수업 | 목표별 준비`,
+    description:`${region.name} ${course.name} 준비 방법과 1:1 수업 선택 기준을 안내합니다. 현재 수준, 목표, 시험·사용 목적에 맞춰 필요한 연습을 확인하세요.`,
+    eyebrow:`${region.name} · ${course.name}`,
+    h1:`${region.name} ${course.name}, 목표에 맞는 1:1 준비 방법`,
+    intro:`${region.name}에서 ${course.name} 수업을 찾는다면 위치나 수업 횟수부터 정하기보다 현재 수준과 목표를 먼저 확인하는 것이 좋습니다. ${course.name}에서 중요한 것은 ${angle.goal}입니다. ${areaText} 등 어느 생활권에서 검색하더라도 화상 수업이라면 이동 거리보다 실제 연습량과 피드백 방식을 우선해 비교할 수 있습니다.`,
+    targetKeywords:[`${region.name} ${course.name}`,`${region.name} ${angle.second.split('·')[0]}`,`${region.name} ${angle.second.split('·')[1]||'1:1 수업'}`,angle.score],
+    sections:[
+      {title:`${course.name} 준비 전, 현재 수준부터 확인하세요`,paragraphs:[`같은 목표를 가지고 있어도 시작점은 다릅니다. 이미 기본 문장을 빠르게 만들 수 있는 학습자와 단어를 조합해 짧게 답하는 학습자는 같은 교재를 같은 속도로 진행할 필요가 없습니다. 첫 단계에서는 ${angle.score}만 정하기보다 실제 수행 수준을 확인해야 합니다.`,`진단에서는 알고 있는 지식보다 실제로 말하거나 쓰는 과정에서 어디에서 막히는지를 보는 편이 좋습니다. 그 결과를 기준으로 학습량을 배분하면 불필요한 반복을 줄일 수 있습니다.`]},
+      {title:`${region.name}에서 수업을 비교할 때 '내가 직접 하는 시간'을 보세요`,paragraphs:[`${course.name}은 설명을 오래 듣는 것만으로 결과를 확인하기 어렵습니다. 수업 중 ${angle.practice}을 직접 수행하고, 피드백을 받은 뒤 다시 시도하는 시간이 충분한지 확인하는 것이 중요합니다.`,`특히 일정이 바쁜 성인이나 학생이라면 한 번의 수업 시간을 길게 잡는 것보다 복습과 재연습이 가능한 주기를 만드는 것이 더 효과적일 수 있습니다.`],bullets:['현재 수준에 맞는 과제량','수업 중 직접 말하거나 쓰는 시간','피드백 후 재시도 과정']},
+      {title:`${angle.score}에 맞춰 학습 우선순위를 정하세요`,paragraphs:[`목표가 명확할수록 모든 영역을 같은 비중으로 공부할 필요는 없습니다. ${course.name}에서 자주 막히는 영역과 결과에 직접 영향을 주는 요소를 먼저 찾아 우선순위를 정하는 편이 효율적입니다.`,`단기간 목표라면 실전 형식에 익숙해지는 과정이 중요하고, 기초가 부족하다면 실전 문제만 반복하기보다 필요한 문장·어휘·구조를 함께 보완해야 합니다.`]},
+      {title:`${areaText} 등 ${region.name} 생활권에서 화상 1:1을 활용한다면`,paragraphs:[`화상 수업은 지역 내 이동 시간을 줄이고 일정 선택 폭을 넓힐 수 있습니다. 다만 온라인이라는 이유만으로 좋은 수업이 되는 것은 아닙니다. 화면을 통해서도 학습자가 직접 수행하고 즉시 피드백을 받는 구조가 있어야 합니다.`,`따라서 ${region.name} ${course.name}을 찾을 때는 가까운 곳이라는 조건과 함께 목표 진단, 수업 기록, 복습 방식까지 확인해보는 것이 좋습니다.`]}
     ],
-    faq: [
-      { q: '영어 왕초보도 오픽을 준비할 수 있나요?', a: '가능합니다. 다만 처음부터 긴 스크립트를 외우기보다 기본 문장 만들기와 짧은 발화부터 시작해 답변 길이를 단계적으로 늘리는 방식이 적합합니다.' },
-      { q: '오픽 IM3에서 IH까지 얼마나 걸리나요?', a: '현재 발화 수준과 학습 가능 시간에 따라 차이가 큽니다. 등급만 보고 기간을 정하기보다 첫 진단에서 질문 이해, 문장 생성 속도, 답변 길이와 자연스러움을 확인한 뒤 계획을 잡는 것이 좋습니다.' },
-      { q: '오픽 수업은 문법도 배우나요?', a: '말하기에 반복적으로 영향을 주는 시제, 어순, 주어·동사 일치 등은 답변 피드백 과정에서 교정할 수 있습니다. 시험 목적이라면 문법 이론 전체를 다시 공부하기보다 실제 발화에서 자주 발생하는 오류부터 다루는 편이 효율적입니다.' },
-      { q: '수원에 거주하지 않아도 화상 수업이 가능한가요?', a: '가능합니다. 지역 페이지는 해당 지역 검색자를 위한 학습 안내이며, 화상 방식이라면 거주 지역과 관계없이 일정 조율 후 진행할 수 있습니다.' }
+    faq:[
+      {q:`${course.name} 왕초보도 시작할 수 있나요?`,a:'가능합니다. 다만 기초 단계에서는 실전 문제만 반복하기보다 필요한 문장 구조와 핵심 표현을 함께 보완하면서 난도를 높이는 편이 좋습니다.'},
+      {q:'1:1 수업은 어떤 점을 확인해야 하나요?',a:'현재 수준 진단, 학습자가 직접 수행하는 시간, 피드백 후 재시도 과정, 목표에 맞는 과제량이 있는지 확인하는 것이 좋습니다.'},
+      {q:`${region.name} 외 지역에서도 화상 수업이 가능한가요?`,a:'화상 방식이라면 거주 지역과 관계없이 일정 조율 후 진행할 수 있습니다. 지역 페이지는 해당 지역 검색자의 선택 기준을 돕기 위한 안내입니다.'}
     ],
-    related: [
-      { href: '/suwon', label: '수원 영어회화' },
-      { href: '/suwon/toeic-speaking', label: '수원 토익스피킹' },
-      { href: '/suwon/gtelp', label: '수원 지텔프' },
-      { href: '/opic', label: '오픽 수업 안내' },
-      { href: '/english-conversation', label: '영어회화' }
-    ],
-    ctaTitle: '오픽 목표와 현재 수준부터 확인해보세요',
-    ctaText: '목표 등급만 정해두기보다 지금 어느 정도까지 말할 수 있는지 확인하면 필요한 수업 횟수와 학습 우선순위를 더 구체적으로 정할 수 있습니다.'
+    related:[{href:`/${region.slug}`,label:`${region.name} 영어회화`},{href:`/${course.slug}`,label:`${course.name} 학습 안내`},{href:'/english-writing',label:'영어 라이팅'},{href:'/english-interview',label:'영어 인터뷰'}],
+    ctaTitle:`${course.name} 목표와 현재 수준부터 확인하세요`,
+    ctaText:'목표만 정해두기보다 지금 가능한 수준을 확인하면 필요한 학습 기간과 우선순위를 더 구체적으로 정할 수 있습니다.'
   }
-]
-
-export function getLandingContent(region: string, course: string) {
-  return landingContent.find((item) => item.region === region && item.course === course)
 }

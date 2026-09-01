@@ -1,18 +1,2 @@
-import type { MetadataRoute } from 'next'
-import { courses } from '@/data/courses'
-import { landingContent } from '@/data/landing-content'
-import { regions } from '@/data/regions'
-import { SITE_URL } from '@/lib/site'
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date()
-  const staticPages = ['', '/english-conversation', ...courses.map(c => `/${c.slug}`), '/guide']
-  const regionPages = regions.map(r => `/${r.slug}`)
-  const regionCoursePages = landingContent.map(p => `/${p.region}/${p.course}`)
-  return [...staticPages, ...regionPages, ...regionCoursePages].map((path) => ({
-    url: `${SITE_URL}${path}`,
-    lastModified: now,
-    changeFrequency: path === '' ? 'weekly' : 'monthly',
-    priority: path === '' ? 1 : path.split('/').length <= 2 ? 0.8 : 0.7,
-  }))
-}
+import type { MetadataRoute } from 'next'; import {SITE_URL} from '@/lib/site'; import {regions} from '@/data/regions'; import {courses} from '@/data/courses'; import {landingPages} from '@/data/landing-pages'
+export default function sitemap():MetadataRoute.Sitemap{const now=new Date();const fixed=['','/guide','/guide/opic-ih','/guide/toeic-speaking-150','/guide/ielts-65','/guide/ielts-writing','/guide/toefl-writing','/guide/gtelp-65','/guide/beginner-english','/guide/international-school-interview','/guide/international-school-writing','/guide/study-abroad-english',...courses.map(c=>`/${c.slug}`),'/ielts/writing','/ielts/speaking','/toefl/writing','/toefl/speaking'];return [...fixed.map(p=>({url:`${SITE_URL}${p}`,lastModified:now,changeFrequency:'weekly' as const,priority:p===''?1:.8})),...regions.map(r=>({url:`${SITE_URL}/${r.slug}`,lastModified:now,changeFrequency:'weekly' as const,priority:.8})),...landingPages.map(p=>({url:`${SITE_URL}/${p.region}/${p.course}`,lastModified:now,changeFrequency:'weekly' as const,priority:.7}))]}

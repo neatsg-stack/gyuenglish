@@ -1,3 +1,4 @@
 import type { Metadata } from 'next'
-export const metadata: Metadata = { title: 'international-school', description: 'international-school 1:1 영어수업과 학습 정보를 안내합니다.', alternates: { canonical: '/international-school' } }
-export default function Page(){return <main><header className="hero compact"><h1>international-school</h1><p>이 페이지는 과목별 SEO 허브용 기본 템플릿입니다. 실제 공개 전 한국어 고유 콘텐츠로 확장합니다.</p></header></main>}
+import CourseHub from '@/components/CourseHub'
+export const metadata: Metadata = { title: '국제학교 1:1 수업', description: '국제학교 영어·라이팅·인터뷰 준비. 목표별 학습 방향과 지역별 수업 선택 기준을 안내합니다.', alternates: { canonical: '/international-school' } }
+export default function Page(){ return <CourseHub slug="international-school" /> }
