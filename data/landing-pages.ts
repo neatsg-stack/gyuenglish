@@ -57,4 +57,18 @@ export const landingPages = [
   { region: 'daegu', course: 'gtelp' },
 ] as const
 
-export function isLandingPage(region: string, course: string) { return landingPages.some((page) => page.region === region && page.course === course) }
+export const intentCourses = ['english-conversation','opic','toeic-speaking','toeic','ielts','toefl','gtelp'] as const
+
+export function isBaseLandingPage(region: string, course: string) { return landingPages.some((page) => page.region === region && page.course === course) }
+export function isLandingPage(region: string, slug: string) {
+  const base = slug.replace(/-(academy|tutoring)$/, '')
+  if (!isBaseLandingPage(region, base)) return false
+  if (slug === base) return true
+  return intentCourses.includes(base as (typeof intentCourses)[number])
+}
+export function expandedLandingPages() {
+  return landingPages.flatMap((page) => intentCourses.includes(page.course as (typeof intentCourses)[number])
+    ? [page, {region:page.region, course:`${page.course}-academy`}, {region:page.region, course:`${page.course}-tutoring`}]
+    : [page])
+}
+

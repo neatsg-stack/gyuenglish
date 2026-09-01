@@ -1,6 +1,7 @@
 import { getRegion } from './regions'
 import { getCourse } from './courses'
-import { isLandingPage } from './landing-pages'
+import { isBaseLandingPage } from './landing-pages'
+import type { SearchIntent } from './search-intents'
 
 export type LandingContent = { title:string; description:string; eyebrow:string; h1:string; intro:string; targetKeywords:string[]; sections:{title:string; paragraphs:string[]; bullets?:string[]}[]; faq:{q:string;a:string}[]; related:{href:string;label:string}[]; ctaTitle:string;ctaText:string }
 
@@ -18,18 +19,18 @@ const courseAngles: Record<string, {goal:string; score:string; practice:string; 
   'study-abroad':{goal:'출국 이후 실제 학업과 생활에서 필요한 영어를 준비하는 것',score:'출국 시점과 학교 요구 수준',practice:'회화·아카데믹 Writing·Interview',second:'유학영어·출국 전 영어'}
 }
 
-export function getLandingContent(regionSlug:string, courseSlug:string): LandingContent | undefined {
-  if(!isLandingPage(regionSlug,courseSlug)) return undefined
+export function getLandingContent(regionSlug:string, courseSlug:string, intent:SearchIntent='general'): LandingContent | undefined {
+  if(!isBaseLandingPage(regionSlug,courseSlug)) return undefined
   const region=getRegion(regionSlug); const course=getCourse(courseSlug); const angle=courseAngles[courseSlug]
   if(!region||!course||!angle) return undefined
   const areaText=region.localAreas.slice(0,3).join('·')
   return {
-    title:`${region.name} ${course.name} 1:1 수업 | 목표별 준비`,
-    description:`${region.name} ${course.name} 준비 방법과 1:1 수업 선택 기준을 안내합니다. 현재 수준, 목표, 시험·사용 목적에 맞춰 필요한 연습을 확인하세요.`,
-    eyebrow:`${region.name} · ${course.name}`,
-    h1:`${region.name} ${course.name}, 목표에 맞는 1:1 준비 방법`,
-    intro:`${region.name}에서 ${course.name} 수업을 찾는다면 위치나 수업 횟수부터 정하기보다 현재 수준과 목표를 먼저 확인하는 것이 좋습니다. ${course.name}에서 중요한 것은 ${angle.goal}입니다. ${areaText} 등 어느 생활권에서 검색하더라도 화상 수업이라면 이동 거리보다 실제 연습량과 피드백 방식을 우선해 비교할 수 있습니다.`,
-    targetKeywords:[`${region.name} ${course.name}`,`${region.name} ${angle.second.split('·')[0]}`,`${region.name} ${angle.second.split('·')[1]||'1:1 수업'}`,angle.score],
+    title:`${region.name} ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':' 1:1 수업'} | 목표별 준비`,
+    description:`${region.name} ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':' 1:1 수업'}을 찾을 때 확인할 준비 방법과 선택 기준을 안내합니다. 현재 수준, 목표, 시험·사용 목적에 맞춰 필요한 연습을 확인하세요.`,
+    eyebrow:`${region.name} · ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':''}`,
+    h1:`${region.name} ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':''}, 목표에 맞는 준비 방법`,
+    intro:`${region.name}에서 ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':' 수업'}을 찾는다면 위치나 수업 횟수부터 정하기보다 현재 수준과 목표를 먼저 확인하는 것이 좋습니다. ${course.name}에서 중요한 것은 ${angle.goal}입니다. ${areaText} 등 어느 생활권에서 검색하더라도 화상 수업이라면 이동 거리보다 실제 연습량과 피드백 방식을 우선해 비교할 수 있습니다.`,
+    targetKeywords:[`${region.name} ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':''}`,`${region.name} ${angle.second.split('·')[0]}`,`${region.name} ${angle.second.split('·')[1]||'1:1 수업'}`,angle.score],
     sections:[
       {title:`${course.name} 준비 전, 현재 수준부터 확인하세요`,paragraphs:[`같은 목표를 가지고 있어도 시작점은 다릅니다. 이미 기본 문장을 빠르게 만들 수 있는 학습자와 단어를 조합해 짧게 답하는 학습자는 같은 교재를 같은 속도로 진행할 필요가 없습니다. 첫 단계에서는 ${angle.score}만 정하기보다 실제 수행 수준을 확인해야 합니다.`,`진단에서는 알고 있는 지식보다 실제로 말하거나 쓰는 과정에서 어디에서 막히는지를 보는 편이 좋습니다. 그 결과를 기준으로 학습량을 배분하면 불필요한 반복을 줄일 수 있습니다.`]},
       {title:`${region.name}에서 수업을 비교할 때 '내가 직접 하는 시간'을 보세요`,paragraphs:[`${course.name}은 설명을 오래 듣는 것만으로 결과를 확인하기 어렵습니다. 수업 중 ${angle.practice}을 직접 수행하고, 피드백을 받은 뒤 다시 시도하는 시간이 충분한지 확인하는 것이 중요합니다.`,`특히 일정이 바쁜 성인이나 학생이라면 한 번의 수업 시간을 길게 잡는 것보다 복습과 재연습이 가능한 주기를 만드는 것이 더 효과적일 수 있습니다.`],bullets:['현재 수준에 맞는 과제량','수업 중 직접 말하거나 쓰는 시간','피드백 후 재시도 과정']},

@@ -1,34 +1,15 @@
-# 규잉글리시 SEO Starter
+# 규잉글리시 SEO V5 — 검색 의도별 전환 시스템
 
-Next.js App Router 기반 SEO 사이트 스타터입니다.
+## 핵심 변경
+- 지역 + 과목 일반 검색, 지역 + 과목학원, 지역 + 과목과외를 서로 다른 검색 의도로 처리합니다.
+- 예: `/gangnam/toefl`, `/gangnam/toefl-academy`, `/gangnam/toefl-tutoring`
+- 상단 전환 카피는 시험/목적 × 검색 의도에 따라 달라집니다.
+- 하단 SEO HTML 역시 intent에 맞춰 title/H1/description이 달라집니다.
+- 모바일 하단 고정 CTA는 유지합니다.
+- 기존 지역/과목 URL은 유지해 URL 변경 리스크를 피합니다.
 
-## 포함
-- 지역 동적 페이지 `/[region]`
-- 지역 × 과목 페이지 `/[region]/[course]`
-- `generateMetadata` 기반 고유 title/description/canonical
-- `sitemap.ts`, `robots.ts`
-- JSON-LD Breadcrumb 기본 구조
-- 지역/과목 데이터를 코드와 분리
-- 모바일 우선 기본 CSS
+## 카피 원칙
+사용자가 제공한 참고 이미지의 전개 방식(“학원 알아보다 오셨나요?”, 목표에서 거꾸로 계산, 영역별 약점, 직접 수행/피드백)을 적극 반영하되 경쟁 사이트 문구를 그대로 복제하지 않고 규잉글리시 문장으로 재작성합니다.
 
-## 가장 먼저 수정할 것
-1. `lib/site.ts`의 실제 도메인
-2. `data/regions.ts`에 1차 지역 추가
-3. 각 과목 허브 페이지의 한국어 콘텐츠 작성
-4. 지역×과목 페이지를 실제 공개할 조합만 선별
-
-## 실행
-```bash
-npm install
-npm run dev
-```
-
-## 주의
-현재 `generateStaticParams()`는 샘플 지역 × 모든 과목 조합을 생성합니다. 실제 SEO 공개 전에는 검색 의도와 콘텐츠가 충분한 조합만 생성하도록 allow-list 방식으로 변경하는 것을 권장합니다.
-
-## Conversion / SEO split (V4)
-- Main page: HTML + visual conversion content, then SEO information.
-- Region / region-course / course hub pages: shared WebP conversion graphics with minimal unique HTML hero copy and real HTML CTA links.
-- SEO area starts below the conversion area with breadcrumb, H1/H2, page-specific content, FAQ and internal links.
-- Mobile sticky CTA stays visible across the site.
-- Canonical base URL currently uses https://gyuenglish.vercel.app and should be changed once a custom domain is connected.
+## 적용
+clean ZIP의 내용물을 기존 GitHub 로컬 저장소 루트에 덮어쓴 뒤 main 브랜치에서 Commit → Push 합니다.
