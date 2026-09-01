@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import ConversionVisuals from '@/components/ConversionVisuals'
 import { courses } from '@/data/courses'
 import { getRegion, regions } from '@/data/regions'
 import { regionContent } from '@/data/region-content'
@@ -39,11 +40,6 @@ export default async function RegionPage({ params }: Props) {
     landingPages.some((page) => page.region === region.slug && page.course === course.slug),
   )
   const nearbyRegions = region.nearby.map(getRegion).filter(Boolean)
-  const audience = custom?.audience ?? [
-    { title: '왕초보', body: '짧은 문장 구성과 기본 질문·답변부터 반복해 실제 발화로 연결합니다.' },
-    { title: '성인 영어회화', body: '여행·생활·자기계발 등 실제 사용 상황을 중심으로 필요한 표현을 연습합니다.' },
-    { title: '직장인 영어회화', body: '회의·전화·업무 대화 등 실제 직무 상황을 반영해 말하기 훈련을 구성합니다.' },
-  ]
   const checkpoints = custom?.checkpoints ?? [
     { title: '현재 수준 진단', body: '문법 지식보다 실제로 듣고 말할 때 어디에서 막히는지 확인합니다.' },
     { title: '목표와 기간 설정', body: '회화·시험·유학 등 목적과 필요한 시점을 기준으로 우선순위를 정합니다.' },
@@ -87,108 +83,78 @@ export default async function RegionPage({ params }: Props) {
 
   return (
     <main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <nav className="breadcrumb" aria-label="breadcrumb"><Link href="/">홈</Link> › {region.name}</nav>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }} />
 
-      <article>
-        <div className="conversion-zone region-conversion v3-conversion">
-          <header className="lead-hero region-lead-hero">
-            <div className="lead-hero-inner">
-              <p className="eyebrow">{region.province} · 1:1 ENGLISH</p>
-              <h1>{region.name} 영어회화,<br />열심히 해도 말이 안 나온다면</h1>
-              <p className="lead-copy">수업 횟수를 늘리기 전에 지금 어디에서 막히는지 먼저 확인해보세요. 왕초보·성인·직장인 회화부터 시험영어까지 현재 수준과 목표에 맞춰 방향을 안내합니다.</p>
-              <div className="lead-actions"><Link className="lead-primary" href="/#trial">무료 시범수업 신청하기</Link><Link className="lead-secondary" href="/#consult">전화문의</Link></div>
-              <div className="lead-proof"><span>{region.name} 1:1 상담</span><span>현재 수준 확인</span><span>목표별 수업 설계</span></div>
-            </div>
-          </header>
+      <ConversionVisuals
+        context={`${region.name} 1:1 영어수업`}
+        title={`${region.name}에서 영어를 배우는데도\n막상 말하려면 막히나요?`}
+        subtitle="수업을 더 늘리기 전에 현재 수준과 목표부터 확인해보세요. 필요한 부분부터 우선순위를 정해 안내합니다."
+      />
 
-          <section className="conversion-story">
-            <div className="section-heading conversion-heading"><p className="eyebrow">COMMON WORRIES</p><h2>이런 고민이라면 먼저 상담해보세요</h2></div>
-            <div className="pain-grid three">
-              <div className="pain-card"><strong>영어는 읽는데 말이 안 나와요</strong><p>아는 표현을 실제 발화로 연결하는 연습이 필요한 경우가 많습니다.</p></div>
-              <div className="pain-card"><strong>어떤 수업이 맞는지 모르겠어요</strong><p>회화·오픽·토스·유학 준비는 목표에 따라 수업 방향이 달라집니다.</p></div>
-              <div className="pain-card"><strong>내 수준으로 시작해도 될까요?</strong><p>현재 수준을 먼저 확인하면 시작점과 필요한 연습을 더 정확히 정할 수 있습니다.</p></div>
-            </div>
-          </section>
+      <article className="seo-zone seo-tail region-seo-zone">
+        <nav className="breadcrumb" aria-label="breadcrumb"><Link href="/">홈</Link> › {region.name}</nav>
 
-          <section className="conversion-steps">
-            <div className="step-strip"><div><b>01</b><strong>수준 확인</strong></div><div><b>02</b><strong>목표 확인</strong></div><div><b>03</b><strong>맞는 수업 제안</strong></div></div>
-          </section>
+        <section className="seo-intro-section">
+          <p className="seo-section-label">영어 학습 정보</p>
+          <h1>{region.name} 영어회화 1:1 수업 안내</h1>
+          <p>{custom?.intro ?? '영어회화는 수업 횟수만 늘리기보다 현재 듣기·문장 구성·발화 수준과 실제 영어가 필요한 상황을 먼저 구분하는 것이 중요합니다. 기초 회화, 업무 영어, 시험 준비처럼 목표가 달라지면 필요한 수업 방식도 달라집니다.'}</p>
+          <p>문법과 독해는 어느 정도 가능하지만 말할 때 문장이 나오지 않는 사람이라면 새로운 교재를 계속 배우기보다 알고 있는 표현을 입 밖으로 꺼내는 연습이 더 필요할 수 있습니다. 반대로 단어와 기본 문장 구조가 익숙하지 않다면 프리토킹보다 짧은 문장을 정확하게 만들어 말하는 단계가 먼저입니다.</p>
+        </section>
 
-          <section className="conversion-final compact-final"><div><p className="eyebrow">FREE TRIAL</p><h2>수업을 정하기 전에 먼저 확인해보세요</h2><p>현재 수준과 목표를 바탕으로 필요한 학습 방향부터 안내합니다.</p></div><Link className="lead-primary" href="/#trial">무료 시범수업 신청하기</Link></section>
-        </div>
+        <section className="soft-section seo-block">
+          <div className="section-heading"><h2>{region.name}에서 1:1 영어수업을 고를 때 확인할 점</h2></div>
+          <div className="check-list">
+            {checkpoints.map((item, index) => (
+              <div className="check-item" key={item.title}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <div><h3>{item.title}</h3><p>{item.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        <div className="seo-zone region-seo-zone seo-tail">
-          <section id="how-to-choose" className="prose-section seo-reading-section">
-            
-            <h2>{region.name} 영어회화, 수업부터 정하기 전에 목표를 먼저 확인하세요</h2>
-            <p>{custom?.intro ?? '영어회화는 수업 횟수만 늘리기보다 현재 듣기·문장 구성·발화 수준과 실제 영어가 필요한 상황을 먼저 구분하는 것이 중요합니다. 기초 회화, 업무 영어, 시험 준비처럼 목표가 달라지면 필요한 수업 방식도 달라집니다.'}</p>
-            <p>문법과 독해는 어느 정도 가능하지만 말할 때 문장이 나오지 않는 사람이라면 새로운 교재를 계속 배우기보다 알고 있는 표현을 입 밖으로 꺼내는 연습이 더 필요할 수 있습니다. 반대로 단어와 기본 문장 구조가 익숙하지 않다면 프리토킹보다 짧은 문장을 정확하게 만들어 말하는 단계가 먼저입니다.</p>
-          </section>
-
-          <section className="soft-section seo-block">
-            <div className="section-heading"><h2>1:1 영어수업을 고를 때 확인하면 좋은 세 가지</h2></div>
-            <div className="check-list">
-              {checkpoints.map((item, index) => (
-                <div className="check-item" key={item.title}>
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  <div><h3>{item.title}</h3><p>{item.body}</p></div>
-                </div>
+        <section id="courses" className="seo-block">
+          <div className="section-heading"><h2>{region.name}에서 함께 찾는 영어 과정</h2></div>
+          <p className="section-intro">회화, 취업·이직 시험, 유학 준비처럼 목표에 따라 평가 방식과 필요한 연습이 달라집니다. 목표가 정해져 있다면 일반 회화와 시험 대비를 구분해 우선순위를 잡는 편이 효율적입니다.</p>
+          {availableCourses.length > 0 && (
+            <div className="grid compact-course-grid">
+              {availableCourses.map((course) => (
+                <Link key={course.slug} href={`/${region.slug}/${course.slug}`} className="card course-card">
+                  <strong>{region.name} {course.name}</strong><span>{course.description}</span><em>자세히 보기 →</em>
+                </Link>
               ))}
             </div>
-          </section>
-
-          <section id="courses" className="seo-block">
-            <div className="section-heading"><h2>점수가 필요하다면 시험에 맞는 준비가 필요합니다</h2></div>
-            <p className="section-intro">취업이나 이직을 위한 말하기 시험은 일반 회화와 평가 방식이 다릅니다. 목표 시험이 정해져 있다면 회화 실력을 키우는 것과 동시에 문제 유형과 평가 기준에 맞춘 훈련을 병행하는 편이 효율적입니다.</p>
-            {availableCourses.length > 0 && (
-              <div className="grid compact-course-grid">
-                {availableCourses.map((course) => (
-                  <Link key={course.slug} href={`/${region.slug}/${course.slug}`} className="card course-card">
-                    <strong>{region.name} {course.name}</strong><span>{course.description}</span><em>자세히 보기 →</em>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </section>
-
-          {custom && (
-            <section className="seo-block">
-              <div className="section-heading"><p className="eyebrow">LOCAL AREA</p><h2>{region.name} 주요 생활권에서도 목적에 맞춰 준비할 수 있습니다</h2></div>
-              <p>{custom.localNote}</p>
-              <div className="area-tags" aria-label={`${region.name} 관련 지역`}>
-                {custom.localAreas.map((area) => <span key={area}>{area} 영어회화</span>)}
-              </div>
-            </section>
           )}
+        </section>
 
-          <section className="prose-section seo-reading-section">
-            <p className="eyebrow">SEO GUIDE 04</p>
-            <h2>영어회화와 시험영어를 함께 준비한다면</h2>
-            <p>오픽과 토익스피킹은 영어로 답변하는 시험이라는 점에서는 회화와 연결되지만, 실제 점수를 만들기 위해서는 유형별 답변 구성과 시간 관리가 필요합니다. IELTS와 TOEFL은 여러 영역을 함께 평가하므로 현재 점수와 목표 점수를 기준으로 우선순위를 정하는 편이 좋습니다.</p>
-            <p>영어 라이팅이나 국제학교·유학 준비가 필요한 경우에도 목적이 분명해야 합니다. 일상 회화에서 자연스러운 문장을 만드는 훈련과 시험 또는 아카데믹 Writing에서 논리를 구성하는 훈련은 서로 연결되지만 평가 기준은 다르기 때문입니다.</p>
-          </section>
-
-          <section className="link-cloud-section">
-            <div className="section-heading"><p className="eyebrow">RELATED</p><h2>함께 확인하면 좋은 과정과 지역</h2></div>
-            <div className="related-links chip-links">
-              <Link href="/opic">오픽</Link><Link href="/toeic-speaking">토익스피킹</Link><Link href="/ielts">IELTS</Link><Link href="/toefl">TOEFL</Link><Link href="/gtelp">G-TELP</Link><Link href="/english-writing">영어 라이팅</Link><Link href="/english-interview">영어 인터뷰</Link><Link href="/international-school">국제학교</Link><Link href="/study-abroad">유학영어</Link>
-              {nearbyRegions.map((nearby) => nearby && <Link key={nearby.slug} href={`/${nearby.slug}`}>{nearby.name} 영어회화</Link>)}
+        {custom && (
+          <section className="seo-block">
+            <div className="section-heading"><h2>{region.name} 주요 생활권과 영어수업</h2></div>
+            <p>{custom.localNote}</p>
+            <div className="area-tags" aria-label={`${region.name} 관련 지역`}>
+              {custom.localAreas.map((area) => <span key={area}>{area} 영어회화</span>)}
             </div>
           </section>
+        )}
 
-          <section id="faq" className="faq-section">
-            <div className="section-heading"><p className="eyebrow">FAQ</p><h2>{region.name} 영어회화에서 자주 묻는 질문</h2></div>
-            {faq.map((item) => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}
-          </section>
+        <section className="prose-section seo-reading-section">
+          <h2>영어회화와 시험영어를 함께 준비한다면</h2>
+          <p>오픽과 토익스피킹은 영어로 답변하는 시험이라는 점에서는 회화와 연결되지만, 실제 점수를 만들기 위해서는 유형별 답변 구성과 시간 관리가 필요합니다. IELTS와 TOEFL은 여러 영역을 함께 평가하므로 현재 점수와 목표 점수를 기준으로 우선순위를 정하는 편이 좋습니다.</p>
+          <p>영어 라이팅이나 국제학교·유학 준비가 필요한 경우에도 목적이 분명해야 합니다. 일상 회화에서 자연스러운 문장을 만드는 훈련과 시험 또는 아카데믹 Writing에서 논리를 구성하는 훈련은 서로 연결되지만 평가 기준은 다르기 때문입니다.</p>
+        </section>
 
-          <section className="cta-box final-cta">
-            <p className="eyebrow">1:1 ENGLISH</p>
-            <h2>내게 필요한 영어수업부터 정리해보세요</h2>
-            <p>영어가 필요한 목적, 현재 수준, 목표 시기와 가능한 수업 시간을 기준으로 학습 방향을 정할 수 있습니다.</p>
-            <Link href="/#trial" className="primary-button">무료 시범수업 신청하기</Link>
-          </section>
-        </div>
+        <section className="link-cloud-section">
+          <div className="section-heading"><h2>관련 영어 과정과 인접 지역</h2></div>
+          <div className="related-links chip-links">
+            <Link href="/opic">오픽</Link><Link href="/toeic-speaking">토익스피킹</Link><Link href="/ielts">IELTS</Link><Link href="/toefl">TOEFL</Link><Link href="/gtelp">G-TELP</Link><Link href="/english-writing">영어 라이팅</Link><Link href="/english-interview">영어 인터뷰</Link><Link href="/international-school">국제학교</Link><Link href="/study-abroad">유학영어</Link>
+            {nearbyRegions.map((nearby) => nearby && <Link key={nearby.slug} href={`/${nearby.slug}`}>{nearby.name} 영어회화</Link>)}
+          </div>
+        </section>
+
+        <section id="faq" className="faq-section">
+          <div className="section-heading"><h2>{region.name} 영어회화 자주 묻는 질문</h2></div>
+          {faq.map((item) => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}
+        </section>
       </article>
     </main>
   )

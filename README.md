@@ -25,3 +25,10 @@ npm run dev
 
 ## 주의
 현재 `generateStaticParams()`는 샘플 지역 × 모든 과목 조합을 생성합니다. 실제 SEO 공개 전에는 검색 의도와 콘텐츠가 충분한 조합만 생성하도록 allow-list 방식으로 변경하는 것을 권장합니다.
+
+## Conversion / SEO split (V4)
+- Main page: HTML + visual conversion content, then SEO information.
+- Region / region-course / course hub pages: shared WebP conversion graphics with minimal unique HTML hero copy and real HTML CTA links.
+- SEO area starts below the conversion area with breadcrumb, H1/H2, page-specific content, FAQ and internal links.
+- Mobile sticky CTA stays visible across the site.
+- Canonical base URL currently uses https://gyuenglish.vercel.app and should be changed once a custom domain is connected.
