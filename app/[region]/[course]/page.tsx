@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import IntentConversion from '@/components/IntentConversion'
+import ConversionImageStack from '@/components/ConversionImageStack'
 import { getCourse } from '@/data/courses'
 import { expandedLandingPages, isLandingPage } from '@/data/landing-pages'
 import { getLandingContent } from '@/data/landing-content'
 import { getRegion } from '@/data/regions'
-import { getConversionIntent, parseLandingSlug } from '@/data/search-intents'
+import { parseLandingSlug } from '@/data/search-intents'
 import { SITE_URL } from '@/lib/site'
 
 type Props = { params: Promise<{ region: string; course: string }> }
@@ -30,13 +30,12 @@ export default async function RegionCoursePage({ params }: Props) {
   const region=getRegion(regionSlug); const course=getCourse(courseSlug)
   if(!region||!course||!isLandingPage(regionSlug,landingSlug)) notFound()
   const content=getLandingContent(regionSlug,courseSlug,intent); if(!content) notFound()
-  const conversion=getConversionIntent(courseSlug,intent,region.name,course.name)
   const intentName=intent==='academy'?'학원':intent==='tutoring'?'과외':''
   const breadcrumbLd={'@context':'https://schema.org','@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'홈',item:SITE_URL},{'@type':'ListItem',position:2,name:region.name,item:`${SITE_URL}/${region.slug}`},{'@type':'ListItem',position:3,name:`${course.name}${intentName}`,item:`${SITE_URL}/${region.slug}/${landingSlug}`}]}
   const faqLd={'@context':'https://schema.org','@type':'FAQPage',mainEntity:content.faq.map(item=>({'@type':'Question',name:item.q,acceptedAnswer:{'@type':'Answer',text:item.a}}))}
   return <main>
     <JsonLd data={breadcrumbLd}/><JsonLd data={faqLd}/>
-    <IntentConversion data={conversion}/>
+    <ConversionImageStack courseSlug={courseSlug} courseName={course.name}/>
     <article className="seo-zone course-seo-zone seo-tail">
       <nav className="breadcrumb"><Link href="/">홈</Link> › <Link href={`/${region.slug}`}>{region.name}</Link> › {course.name}{intentName}</nav>
       <section className="seo-intro-section"><p className="seo-section-label">{region.name} {course.name}{intentName} 학습 정보</p><h1>{content.h1}</h1><p>{content.description}</p></section>
