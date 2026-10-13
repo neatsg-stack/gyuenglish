@@ -1,4 +1,6 @@
-export const landingPages = [
+export type LandingPage = { region: string; course: string }
+
+export const landingPages: LandingPage[] = [
   { region: 'incheon', course: 'opic' },
   { region: 'incheon', course: 'toeic-speaking' },
   { region: 'daejeon', course: 'opic' },
@@ -1492,8 +1494,8 @@ export function isLandingPage(region: string, slug: string) {
   if (slug === base) return true
   return intentCourses.includes(base as (typeof intentCourses)[number]) && curatedIntentLandingPages.has(`${region}/${base}`)
 }
-export function expandedLandingPages() {
-  return landingPages.flatMap((page) => {
+export function expandedLandingPages(): LandingPage[] {
+  return landingPages.flatMap<LandingPage>((page): LandingPage[] => {
     const key = `${page.region}/${page.course}`
     return intentCourses.includes(page.course as (typeof intentCourses)[number]) && curatedIntentLandingPages.has(key)
       ? [page, {region:page.region, course:`${page.course}-academy`}, {region:page.region, course:`${page.course}-tutoring`}]
