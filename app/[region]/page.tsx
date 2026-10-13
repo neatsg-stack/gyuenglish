@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: `/${region.slug}` },
+    robots: regionContent[region.slug] ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: { title, description, url: `${SITE_URL}/${region.slug}`, type: 'website' },
   }
 }

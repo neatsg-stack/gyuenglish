@@ -8,6 +8,7 @@ import { getLandingContent } from '@/data/landing-content'
 import { getRegion } from '@/data/regions'
 import { parseLandingSlug } from '@/data/search-intents'
 import { SITE_URL } from '@/lib/site'
+import { isRegionIndexable } from '@/data/region-priority'
 
 type Props = { params: Promise<{ region: string; course: string }> }
 
@@ -19,7 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const region = getRegion(regionSlug); const course = getCourse(courseSlug)
   const content = getLandingContent(regionSlug, courseSlug, intent)
   if (!region || !course || !isLandingPage(regionSlug, landingSlug) || !content) return {}
-  return { title:content.title, description:content.description, alternates:{canonical:`/${region.slug}/${landingSlug}`}, robots:{index:true,follow:true}, openGraph:{title:content.title,description:content.description,url:`${SITE_URL}/${region.slug}/${landingSlug}`,type:'article'} }
+  const indexable = courseSlug !== 'english-conversation' || isRegionIndexable(regionSlug)
+  return { title:content.title, description:content.description, alternates:{canonical:`/${region.slug}/${landingSlug}`}, robots:{index:indexable,follow:true}, openGraph:{title:content.title,description:content.description,url:`${SITE_URL}/${region.slug}/${landingSlug}`,type:'article'} }
 }
 
 function JsonLd({ data }: { data: object }) { return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }} /> }
@@ -38,9 +40,9 @@ export default async function RegionCoursePage({ params }: Props) {
     <ConversionImageStack courseSlug={courseSlug} courseName={course.name}/>
     <article className="seo-zone course-seo-zone seo-tail">
       <nav className="breadcrumb"><Link href="/">홈</Link> › <Link href={`/${region.slug}`}>{region.name}</Link> › {course.name}{intentName}</nav>
-      <section className="seo-intro-section"><p className="seo-section-label">{region.name} {course.name}{intentName} 학습 정보</p><h1>{content.h1}</h1><p>{content.description}</p></section>
+      <section className="seo-intro-section"><p className="seo-section-label">{region.name} {course.name}{intentName} 학습 정보</p><h1>{content.h1}</h1><p>{content.intro}</p></section>
       {content.sections.map((section,index)=><section key={section.title} className={index%2===1?'soft-section prose-section seo-block':'prose-section seo-reading-section'}><div className="section-heading"><h2>{section.title}</h2></div>{section.paragraphs.map(p=><p key={p}>{p}</p>)}{section.bullets&&<ul className="seo-bullets">{section.bullets.map(b=><li key={b}>{b}</li>)}</ul>}</section>)}
-      <section className="link-cloud-section"><div className="section-heading"><h2>함께 확인하면 좋은 영어수업</h2></div><div className="related-links chip-links">{content.related.map(item=><Link key={item.href} href={item.href}>{item.label}</Link>)}</div></section>
+      <section className="link-cloud-section"><div className="section-heading"><h2>{courseSlug === 'english-conversation' ? `${region.name}와 함께 찾는 영어회화 지역·과정` : '함께 확인하면 좋은 영어수업'}</h2></div><div className="related-links chip-links">{content.related.map(item=><Link key={item.href} href={item.href}>{item.label}</Link>)}</div></section>
       <section className="faq-section"><div className="section-heading"><h2>{region.name} {course.name}{intentName} 준비에서 자주 묻는 질문</h2></div>{content.faq.map(item=><details key={item.q}><summary>{item.q}</summary><p>{item.a}</p></details>)}</section>
     </article>
   </main>
