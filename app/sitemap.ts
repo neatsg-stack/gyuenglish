@@ -4,7 +4,7 @@ import { regions } from '@/data/regions'
 import { regionContent } from '@/data/region-content'
 import { courses } from '@/data/courses'
 import { expandedLandingPages } from '@/data/landing-pages'
-import { isRegionIndexable } from '@/data/region-priority'
+import { isLandingIndexable } from '@/data/landing-index'
 import { parseLandingSlug } from '@/data/search-intents'
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const landing = expandedLandingPages().filter(page => {
     const { courseSlug } = parseLandingSlug(page.course)
-    return courseSlug !== 'english-conversation' || isRegionIndexable(page.region)
+    return isLandingIndexable(page.region, courseSlug)
   })
 
   return [

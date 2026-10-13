@@ -8,7 +8,7 @@ import { getLandingContent } from '@/data/landing-content'
 import { getRegion } from '@/data/regions'
 import { parseLandingSlug } from '@/data/search-intents'
 import { SITE_URL } from '@/lib/site'
-import { isRegionIndexable } from '@/data/region-priority'
+import { isLandingIndexable } from '@/data/landing-index'
 
 type Props = { params: Promise<{ region: string; course: string }> }
 
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const region = getRegion(regionSlug); const course = getCourse(courseSlug)
   const content = getLandingContent(regionSlug, courseSlug, intent)
   if (!region || !course || !isLandingPage(regionSlug, landingSlug) || !content) return {}
-  const indexable = courseSlug !== 'english-conversation' || isRegionIndexable(regionSlug)
+  const indexable = isLandingIndexable(regionSlug, courseSlug)
   return { title:content.title, description:content.description, alternates:{canonical:`/${region.slug}/${landingSlug}`}, robots:{index:indexable,follow:true}, openGraph:{title:content.title,description:content.description,url:`${SITE_URL}/${region.slug}/${landingSlug}`,type:'article'} }
 }
 
