@@ -100,34 +100,186 @@ function getEnglishConversationContent(regionSlug:string, intent:SearchIntent, r
   }
 }
 
+type CourseProfile = {
+  audience:string[]
+  goals:string[]
+  diagnostics:string[]
+  practice:string[]
+  pitfalls:string[]
+  timeline:string[]
+  faq:Array<{q:string;a:string}>
+}
+
+const courseProfiles: Record<string, CourseProfile> = {
+  opic:{
+    audience:['진급·취업을 위해 등급이 필요한 직장인','IM3에서 IH 이상으로 올리고 싶은 학습자','외운 답변이 돌발 질문에서 끊기는 학습자'],
+    goals:['설문 주제와 돌발 질문에서 경험을 자연스럽게 이어 말하기','질문 의도를 빠르게 파악하고 답변의 중심을 먼저 잡기','암기 티를 줄이면서도 안정적인 답변 구조 유지하기'],
+    diagnostics:['자기소개·일상·경험 질문에서 답변 길이와 연결어 사용을 확인합니다.','익숙하지 않은 질문에서 침묵 시간이 길어지는지, 같은 표현만 반복하는지 확인합니다.','목표 등급에 비해 시제·이유 설명·구체화가 부족한 부분을 먼저 찾습니다.'],
+    practice:['주제별 핵심 경험을 여러 질문에 재활용하는 연습','돌발 질문을 듣고 10~15초 안에 답변 방향을 잡는 연습','녹음 후 반복 표현·불필요한 침묵·문장 연결을 수정하는 연습'],
+    pitfalls:['스크립트를 문장째 외우면 질문이 조금만 바뀌어도 답변이 무너지기 쉽습니다.','어려운 표현을 많이 넣는 것보다 익숙한 문장으로 끊기지 않고 설명하는 것이 먼저입니다.','모든 주제를 똑같이 준비하기보다 설문 선택과 실제 경험을 기준으로 우선순위를 정해야 합니다.'],
+    timeline:['시험이 임박했다면 새 표현 확대보다 빈출 질문에 대한 답변 안정화와 녹음 피드백 비중을 높입니다.','준비 기간이 충분하면 기본 문장 생성 → 경험 확장 → 돌발 대응 순으로 난도를 올릴 수 있습니다.'],
+    faq:[{q:'오픽은 스크립트를 외우면 안 되나요?',a:'핵심 소재와 표현을 준비하는 것은 도움이 되지만 문장 전체를 고정해서 외우기보다 질문에 맞춰 순서와 표현을 바꾸는 연습이 필요합니다.'},{q:'IH 목표라면 무엇을 가장 먼저 봐야 하나요?',a:'현재 답변 길이, 경험을 구체화하는 방식, 시제와 연결 표현, 돌발 질문에서의 대응력을 먼저 확인하는 편이 좋습니다.'}]
+  },
+  'toeic-speaking':{
+    audience:['진급 요건이나 채용 일정 때문에 점수가 필요한 직장인','답변 시간 안에 문장을 완성하기 어려운 학습자','유형은 알지만 녹음하면 실수가 반복되는 학습자'],
+    goals:['제한 시간 안에 유형별 요구사항을 빠짐없이 답하기','문장 정확도와 전달력을 유지하면서 답변량 확보하기','사진·의견·정보 활용 문제에서 답변 틀을 자동화하기'],
+    diagnostics:['읽기·사진 묘사·질의응답·의견 제시에서 어느 유형의 손실이 큰지 구분합니다.','준비 시간과 답변 시간을 실제 시험처럼 적용해 문장 생성 속도를 확인합니다.','발음 자체보다 끊김, 강세, 문장 완결성처럼 전달을 방해하는 요소를 먼저 봅니다.'],
+    practice:['타이머를 사용한 유형별 반복 답변','녹음 파일을 기준으로 문장 누락과 반복 표현 수정','같은 답변 틀을 다른 주제에 적용하는 변형 연습'],
+    pitfalls:['템플릿만 외우면 질문의 조건을 놓치거나 내용이 비어 보일 수 있습니다.','고급 어휘보다 시간 안에 완결된 답을 만드는 안정성이 우선입니다.','연습 때 시간을 재지 않으면 실제 시험에서 준비·답변 시간 배분이 흔들릴 수 있습니다.'],
+    timeline:['단기 준비는 점수 손실이 큰 유형부터 집중하고 매 수업 실제 시간 제한을 적용합니다.','장기 준비는 기본 문장과 발음·리듬을 보완하면서 유형별 답변량을 단계적으로 늘립니다.'],
+    faq:[{q:'토익스피킹은 영어 초보도 단기간 준비할 수 있나요?',a:'목표 점수와 현재 문장 생성 수준에 따라 다릅니다. 단기라면 모든 표현을 넓게 배우기보다 유형별 필수 구조와 자주 쓰는 문장을 안정화하는 편이 현실적입니다.'},{q:'발음이 좋지 않으면 점수를 받기 어렵나요?',a:'발음만 따로 보기보다 전달이 끊기지 않는지, 문장이 완결되는지, 강세와 속도가 이해를 방해하지 않는지를 함께 확인하는 것이 좋습니다.'}]
+  },
+  toeic:{
+    audience:['기초 점수대에서 600~700점을 먼저 만들고 싶은 학습자','700~800점대에서 정체된 직장인·학생','LC와 RC 중 한 영역의 편차가 큰 학습자'],
+    goals:['파트별 오답 원인을 구분해 점수 손실 줄이기','LC는 근거 청취, RC는 시간 안에 근거를 찾는 습관 만들기','목표 점수에 맞춰 버릴 문제와 확보할 문제를 구분하기'],
+    diagnostics:['최근 점수와 파트별 정답률을 보고 문법·어휘·독해·청취 중 병목을 찾습니다.','RC는 시간 제한을 적용해 정확도와 속도 중 어느 쪽이 문제인지 확인합니다.','LC는 스크립트를 보면 아는 표현인지, 소리로 들을 때 놓치는 표현인지 구분합니다.'],
+    practice:['파트별 오답 이유를 근거와 함께 기록','LC 쉐도잉보다 먼저 정답 근거가 들리는지 확인','RC 문장 구조 분석과 지문별 시간 제한 연습'],
+    pitfalls:['문제 수만 늘리고 오답 이유를 분류하지 않으면 같은 실수가 반복될 수 있습니다.','기초 단계에서 실전 모의고사만 반복하면 문법·어휘 구멍이 그대로 남을 수 있습니다.','고득점 단계에서는 어려운 문제보다 쉬운 문제의 실수와 시간 손실을 먼저 줄여야 합니다.'],
+    timeline:['단기 목표는 현재 점수에서 가장 회수하기 쉬운 파트를 먼저 선정합니다.','장기 목표는 어휘·문법 기반과 실전 시간 관리 훈련을 병행합니다.'],
+    faq:[{q:'토익 기초는 문법부터 시작해야 하나요?',a:'문장 구조가 거의 잡히지 않는다면 핵심 문법이 필요하지만 문법만 오래 공부하기보다 실제 Part 5·6·7 문장과 연결해 적용하는 편이 좋습니다.'},{q:'LC와 RC 중 무엇부터 올려야 하나요?',a:'최근 점수와 오답 유형에 따라 다릅니다. 상대적으로 단기간 회수 가능한 영역과 목표 점수에 필요한 최소 점수를 함께 보고 우선순위를 정하는 것이 좋습니다.'}]
+  },
+  ielts:{
+    audience:['유학·이민을 위해 Overall과 영역별 밴드가 필요한 학습자','Writing 또는 Speaking에서 점수가 정체된 학습자','6.0·6.5·7.0처럼 명확한 목표 Band가 있는 학습자'],
+    goals:['네 영역의 현재 밴드 차이를 파악해 약점 영역 우선 보완','Writing은 논리·전개·문장 정확도, Speaking은 답변 확장과 일관성 강화','목표 Overall뿐 아니라 필요한 영역별 minimum 조건 맞추기'],
+    diagnostics:['최근 성적이 있다면 영역별 밴드와 과제 유형별 약점을 먼저 확인합니다.','Writing 샘플과 Speaking 답변으로 내용 구성, 문법 범위, 어휘 사용, 유창성을 구분해 봅니다.','시험 일정과 필요한 Overall/각 영역 최소 점수를 함께 확인합니다.'],
+    practice:['Writing Task 1·2 구조 설계 후 첨삭과 재작성','Speaking Part 1·2·3의 답변 길이와 논리 확장','Reading·Listening 오답을 문제 유형별로 분류'],
+    pitfalls:['모범답안을 그대로 외우기보다 자신의 문장으로 논리를 재구성해야 합니다.','Overall만 보고 특정 영역의 minimum 조건을 놓치면 지원 요건을 충족하지 못할 수 있습니다.','Writing은 첨삭을 읽는 것에서 끝내지 말고 같은 오류를 고쳐 다시 써야 합니다.'],
+    timeline:['시험이 가까우면 목표 밴드 대비 가장 낮은 영역과 반복 오류를 우선 정리합니다.','기간이 충분하면 언어 기반과 시험 전략을 분리하지 않고 실제 Task에 연결해 단계적으로 보완합니다.'],
+    faq:[{q:'IELTS 6.5 준비는 얼마나 걸리나요?',a:'현재 영역별 밴드와 영어 기반에 따라 크게 달라집니다. 먼저 네 영역을 진단하고 목표 시험일까지 확보 가능한 학습 시간을 기준으로 계획을 잡는 것이 좋습니다.'},{q:'Writing은 첨삭만 많이 받으면 오르나요?',a:'첨삭 횟수보다 같은 오류를 이해하고 재작성하는 과정이 중요합니다. 논리 구조와 반복되는 문법·어휘 문제를 분리해 수정해야 합니다.'}]
+  },
+  toefl:{
+    audience:['미국·해외 대학이나 국제학교 지원을 준비하는 학습자','Reading·Listening은 되지만 Speaking·Writing이 약한 학습자','아카데믹 영어와 시험 시간 관리가 함께 필요한 학습자'],
+    goals:['읽고 들은 정보를 근거로 말하고 쓰는 통합 수행 강화','각 영역의 시간 제한 안에서 핵심 정보 선별','지원 일정과 요구 점수에 맞춘 영역별 목표 설정'],
+    diagnostics:['Reading·Listening의 이해도와 Speaking·Writing으로 정보를 전환하는 능력을 따로 확인합니다.','노트테이킹이 정보 정리에 도움이 되는지 오히려 듣기를 방해하는지 확인합니다.','최근 모의 점수와 지원 학교의 요구 점수를 비교해 영역별 목표를 잡습니다.'],
+    practice:['아카데믹 지문 핵심 구조 파악과 근거 표시','Listening 노트에서 핵심 관계만 추려 답변 구성','Speaking·Writing 통합형에서 근거를 짧고 정확하게 재구성'],
+    pitfalls:['템플릿에 내용을 억지로 끼우면 핵심 근거가 빠질 수 있습니다.','노트를 많이 적는 것보다 답변에 필요한 관계를 남기는 것이 중요합니다.','한 영역만 과도하게 공부하기보다 총점과 지원 조건을 함께 봐야 합니다.'],
+    timeline:['단기에는 현재 점수에서 가장 큰 손실이 나는 영역과 통합형 수행을 집중합니다.','장기에는 아카데믹 어휘·독해·청취 기반과 말하기·쓰기 산출을 함께 올립니다.'],
+    faq:[{q:'토플은 Speaking과 Writing만 따로 준비할 수 있나요?',a:'가능하지만 통합형 과제에서는 읽기와 듣기 이해가 함께 필요합니다. 산출 영역의 문제인지 입력 정보 이해의 문제인지 먼저 구분하는 것이 좋습니다.'},{q:'토플 목표 점수는 어떻게 나눠 잡나요?',a:'지원 학교의 총점과 영역별 조건을 확인한 뒤 현재 강점·약점에 따라 현실적인 영역별 목표를 배분하는 방식이 좋습니다.'}]
+  },
+  gtelp:{
+    audience:['공무원·자격·승진 등 제출 점수가 필요한 학습자','Level 2 65점 등 명확한 기준을 준비하는 학습자','문법에서 빠르게 점수를 확보하고 싶은 학습자'],
+    goals:['빈출 문법 유형의 판단 속도 높이기','청취·독해에서 목표 점수에 필요한 정답 수 확보','시험 목적에 맞춰 과투자할 영역과 확보할 영역 구분'],
+    diagnostics:['문법 유형별 정답률과 풀이 시간을 먼저 확인합니다.','청취는 질문과 선택지 정보를 유지하는 데 어려움이 있는지 확인합니다.','독해는 어휘 부족인지 시간 부족인지 근거 찾기 문제인지 구분합니다.'],
+    practice:['시제·가정법·조동사 등 빈출 문법 유형 반복','청취 문제 흐름에 맞춘 메모와 선택지 판단','독해 지문에서 정답 근거 위치를 빠르게 찾는 연습'],
+    pitfalls:['문법 개념을 처음부터 넓게 공부하기보다 시험에 반복되는 유형을 먼저 정리하는 편이 효율적입니다.','청취를 포기하고 문법만으로 목표를 맞추려는 전략은 현재 점수에 따라 위험할 수 있습니다.','목표가 65점인지 더 높은 점수인지에 따라 영역별 전략을 달리해야 합니다.'],
+    timeline:['단기에는 문법의 회수 가능한 점수를 먼저 안정화하고 청취·독해 최소 목표를 정합니다.','기간이 충분하면 취약 영역의 기초를 보완하면서 실전 세트로 시간 배분을 맞춥니다.'],
+    faq:[{q:'지텔프 65점은 문법만 잘하면 가능한가요?',a:'문법이 중요한 영역이지만 목표 점수는 세 영역 결과로 결정됩니다. 현재 청취·독해 수준까지 확인해 필요한 최소 정답 수를 계산하는 편이 안전합니다.'},{q:'G-TELP 초보는 무엇부터 공부하나요?',a:'Level 2 기준이라면 빈출 문법 유형을 정리하면서 청취와 독해의 현재 수준을 함께 확인해 영역별 목표를 나누는 방식이 좋습니다.'}]
+  },
+  'english-writing':{
+    audience:['영어 에세이의 문장보다 구조가 어려운 학습자','국제학교·유학 과정에서 아카데믹 Writing이 필요한 학생','IELTS·TOEFL Writing의 기초를 별도로 다지고 싶은 학습자'],
+    goals:['주장-근거-예시가 연결되는 글 구조 만들기','문장 정확도와 어휘 선택을 목적에 맞게 조정','첨삭 내용을 다음 글에 재사용할 수 있도록 오류 패턴 관리'],
+    diagnostics:['짧은 샘플 글로 문장 오류와 논리 구조 문제를 분리합니다.','아이디어는 있지만 영어 문장화가 어려운지, 문장은 되지만 전개가 약한지 확인합니다.','학교 과제·시험·에세이 등 실제 Writing 목적과 분량을 확인합니다.'],
+    practice:['아웃라인 작성 후 문단별 역할을 정하고 초안 작성','첨삭 내용을 오류 유형별로 표시한 뒤 재작성','같은 주제를 더 짧고 명확한 문장으로 다시 표현'],
+    pitfalls:['문법 오류만 고치면 글의 논리와 설득력 문제는 남을 수 있습니다.','좋은 표현을 많이 넣는 것보다 문단마다 한 가지 중심 생각을 분명히 하는 것이 우선입니다.','첨삭본을 읽기만 하고 새 글에 적용하지 않으면 같은 오류가 반복됩니다.'],
+    timeline:['과제 마감이 가까우면 구조와 의미 전달을 먼저 안정화하고 반복 오류를 선별해 수정합니다.','장기 학습은 계획-작성-첨삭-재작성 사이클을 반복하며 독립적으로 글을 고치는 힘을 키웁니다.'],
+    faq:[{q:'영어 라이팅은 문법이 약해도 시작할 수 있나요?',a:'가능합니다. 실제 글에서 반복되는 문법 문제를 확인하면서 글의 구조와 함께 보완하면 무엇을 우선 공부해야 하는지 더 분명해집니다.'},{q:'첨삭 수업에서 가장 중요한 것은 무엇인가요?',a:'수정된 정답 문장을 받는 것보다 왜 수정됐는지 이해하고 같은 문장을 스스로 다시 쓰는 과정이 중요합니다.'}]
+  },
+  'english-interview':{
+    audience:['외국계·해외취업 영어면접을 앞둔 지원자','학교·프로그램 입학 인터뷰를 준비하는 학습자','한국어로는 답이 있지만 영어로 길게 설명하기 어려운 지원자'],
+    goals:['경험을 질문 의도에 맞춰 짧고 설득력 있게 구조화','꼬리질문에도 핵심 메시지를 유지하며 답변','외운 티를 줄이고 실제 대화처럼 반응하는 인터뷰 준비'],
+    diagnostics:['자기소개와 지원동기에서 메시지가 분명한지 확인합니다.','경험 질문에 상황·행동·결과가 빠짐없이 들어가는지 봅니다.','예상하지 못한 꼬리질문에서 답변이 지나치게 짧아지거나 멈추는지 확인합니다.'],
+    practice:['이력·지원서 기반 예상 질문 만들기','STAR 등 구조를 활용해 경험 답변 압축','모의면접 녹화 후 내용·속도·표정·반복 표현 점검'],
+    pitfalls:['모범답안을 그대로 외우면 꼬리질문에서 흐름이 쉽게 끊깁니다.','영어 표현을 화려하게 만드는 것보다 지원 직무와 경험의 연결을 명확히 해야 합니다.','질문마다 새 이야기를 만들기보다 핵심 경험 몇 개를 다양한 질문에 맞게 변형하는 편이 효율적입니다.'],
+    timeline:['면접이 임박했다면 실제 지원서와 공고를 기준으로 예상 질문과 모의면접 비중을 높입니다.','기간이 있다면 기본 답변 구조를 만든 뒤 꼬리질문과 압박 질문까지 단계적으로 확장합니다.'],
+    faq:[{q:'영어면접은 며칠 전부터 준비해도 되나요?',a:'남은 기간이 짧아도 지원서 기반 핵심 질문과 경험 답변을 정리할 수 있습니다. 다만 실제로 소리 내어 여러 번 답해보는 시간을 확보하는 것이 중요합니다.'},{q:'답변을 통째로 외우는 것이 좋나요?',a:'핵심 메시지와 표현은 준비하되 문장 전체를 고정하기보다 질문에 따라 길이와 순서를 바꾸는 연습이 실제 면접 대응에 더 유리합니다.'}]
+  },
+  'international-school':{
+    audience:['국제학교 입학·전학을 준비하는 학생','영어 수업은 경험했지만 Writing·Speaking이 약한 학생','학교 인터뷰와 아카데믹 영어를 함께 준비해야 하는 학생'],
+    goals:['학년과 학교 일정에 맞는 Speaking·Writing 준비','수업에서 자신의 생각을 설명하고 근거를 붙이는 힘 강화','입학 인터뷰와 학교 과제에 필요한 영어를 목적별로 분리'],
+    diagnostics:['현재 학년, 출국·입학 시점, 지원 학교의 평가 방식을 먼저 확인합니다.','읽기·듣기 이해와 말하기·쓰기 산출 수준의 차이를 확인합니다.','짧은 Writing과 인터뷰 질문으로 문장 길이와 논리 전개를 봅니다.'],
+    practice:['학교 생활·관심사·학습 경험을 영어로 설명','짧은 의견 글에서 근거와 예시를 붙이는 Writing','인터뷰 질문과 후속 질문에 자연스럽게 답하기'],
+    pitfalls:['일반 회화만 오래 해도 아카데믹 Writing과 학교 과제 수행은 별도 연습이 필요할 수 있습니다.','학년과 학교 요구를 확인하지 않고 시험 문제만 반복하면 실제 입학 준비와 어긋날 수 있습니다.','학생이 외운 답을 말하기보다 자신의 경험을 영어로 재구성할 수 있어야 합니다.'],
+    timeline:['입학이 가까우면 실제 평가 요소와 인터뷰·Writing 과제를 우선합니다.','준비 기간이 충분하면 읽기·어휘 기반과 말하기·쓰기 산출을 함께 쌓아 학교 수업 적응까지 연결합니다.'],
+    faq:[{q:'국제학교 준비는 영어회화만 하면 되나요?',a:'학교와 학년에 따라 다르지만 말하기 외에도 Writing, Reading, Interview 등 학업 수행에 필요한 영어를 함께 확인하는 것이 좋습니다.'},{q:'입학 인터뷰는 어떤 식으로 준비하나요?',a:'학생의 실제 학교생활·관심사·학습 경험을 소재로 기본 답변을 만들고 예상하지 못한 후속 질문에도 자신의 말로 이어가는 연습이 필요합니다.'}]
+  },
+  'study-abroad':{
+    audience:['출국 전 생활 영어와 학업 영어를 함께 준비하는 학생·성인','해외 학교·대학 입학을 앞둔 학습자','시험 점수는 있지만 실제 Speaking·Writing이 불안한 학습자'],
+    goals:['출국 후 필요한 생활 장면과 학업 장면을 구분해 준비','수업 참여·질문·발표·과제에 필요한 표현 강화','출국 일정에 맞춰 우선순위가 높은 상황부터 실전 연습'],
+    diagnostics:['국가·학교·학년과 출국 시점을 확인해 필요한 영어 장면을 정합니다.','시험 점수와 실제 말하기·쓰기 수행 사이의 차이를 확인합니다.','생활 회화, 수업 참여, Writing, Interview 중 가장 급한 영역을 구분합니다.'],
+    practice:['공항·기숙사·행정·일상 요청 등 생활 상황 역할극','수업에서 질문하고 의견을 덧붙이는 Speaking','이메일·과제·짧은 에세이 등 실제 학업 Writing'],
+    pitfalls:['여행 회화만 준비하면 수업 참여와 과제 Writing에서 어려움이 남을 수 있습니다.','출국 전 모든 상황을 완벽하게 준비하기보다 처음 몇 달 자주 마주칠 장면을 우선하는 편이 현실적입니다.','시험 점수가 높아도 실제 대화 속도와 글쓰기 경험은 별도로 점검할 필요가 있습니다.'],
+    timeline:['출국이 임박했다면 생활·수업에서 바로 필요한 장면을 선별해 반복합니다.','기간이 충분하면 아카데믹 어휘와 Writing, 발표·토론까지 단계적으로 넓힐 수 있습니다.'],
+    faq:[{q:'유학 전 영어는 시험 준비와 무엇이 다른가요?',a:'시험 점수뿐 아니라 실제 수업 참여, 질문, 이메일, 과제, 생활 상황에서 영어를 사용하는 연습의 비중이 커집니다.'},{q:'출국 직전에는 무엇부터 준비하는 것이 좋나요?',a:'학교·생활에서 처음 자주 마주칠 상황을 정하고 그 장면에서 필요한 듣기·말하기·쓰기 표현을 우선 연습하는 것이 좋습니다.'}]
+  }
+}
+
+function rotate<T>(items:T[], start:number, count:number):T[] { return Array.from({length:Math.min(count,items.length)},(_,i)=>items[(start+i)%items.length]) }
+
+function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:SearchIntent, region:NonNullable<ReturnType<typeof getRegion>>, course:NonNullable<ReturnType<typeof getCourse>>, angle:NonNullable<(typeof courseAngles)[string]>): LandingContent {
+  const profile=courseProfiles[courseSlug]
+  const h=hashText(`${regionSlug}:${courseSlug}:${intent}`)
+  const intentName=intent==='academy'?'학원':intent==='tutoring'?'과외':''
+  const areaText=region.localAreas.filter(Boolean).slice(0,4).join('·') || region.name
+  const audience=profile?.audience[h%(profile?.audience.length||1)] || `${course.name} 목표가 있는 학습자`
+  const goals=profile?.goals || [angle.goal]
+  const diagnostics=profile?.diagnostics || [`현재 수준과 ${angle.score}의 차이를 확인합니다.`]
+  const practice=profile?.practice || [angle.practice]
+  const pitfalls=profile?.pitfalls || ['설명만 듣기보다 직접 수행하고 피드백 후 다시 시도하는 과정이 필요합니다.']
+  const timeline=profile?.timeline || ['목표 시점과 현재 수준에 따라 학습 우선순위를 조정합니다.']
+  const introVariants=[
+    `${region.name}에서 ${course.name}${intentName}을 찾는다면 먼저 ${angle.score}과 현재 수행 수준의 차이를 확인하는 것이 좋습니다. ${areaText} 등 생활권과 관계없이 화상 1:1에서는 이동 거리보다 실제 수행량과 피드백 구조를 중심으로 비교할 수 있습니다.`,
+    `${region.name} ${course.name} 준비는 같은 교재를 처음부터 끝까지 보는 방식보다 목표와 약점을 먼저 좁히는 편이 효율적입니다. 특히 ${audience}라면 ${goals[h%goals.length]}을 수업 계획의 중심에 두는 것이 좋습니다.`,
+    `${course.name}은 '영어를 많이 공부하는 것'과 '필요한 결과를 만드는 것'이 항상 같지는 않습니다. ${region.name}에서 수업을 비교할 때는 현재 수준을 어떻게 진단하고 ${angle.practice}을 얼마나 직접 해보는지 확인해보세요.`,
+    `${region.name}에서 ${course.name}${intentName}을 알아보는 시점에는 시험·입학·출국·면접처럼 목표 날짜가 정해져 있는 경우가 많습니다. 남은 기간을 먼저 계산한 뒤 가장 큰 점수 손실이나 수행 약점부터 줄이는 방식이 현실적입니다.`
+  ]
+  const sectionPool:LandingContent['sections']=[
+    {title:`${course.name} 시작 전 현재 수준을 어떻게 확인할까`,paragraphs:[diagnostics[h%diagnostics.length],diagnostics[(h+1)%diagnostics.length]],bullets:rotate(diagnostics,h%diagnostics.length,3)},
+    {title:`${region.name} ${course.name}, 목표를 구체적으로 나누는 방법`,paragraphs:[`${angle.score}처럼 결과 목표가 있다면 그 목표를 실제 수행 항목으로 나눠야 합니다. ${goals[h%goals.length]}처럼 무엇을 할 수 있어야 하는지 정하면 수업에서 확인할 기준도 분명해집니다.`,`현재 잘하는 영역까지 같은 비중으로 반복하기보다 목표 결과에 직접 영향을 주는 약점부터 학습 시간을 배분하는 편이 효율적입니다.`],bullets:rotate(goals,h%goals.length,3)},
+    {title:`실전에서 필요한 ${angle.practice}`,paragraphs:[practice[h%practice.length],practice[(h+1)%practice.length]],bullets:rotate(practice,h%practice.length,3)},
+    {title:`${course.name}${intentName}을 고를 때 피해야 할 준비 방식`,paragraphs:[pitfalls[h%pitfalls.length],pitfalls[(h+1)%pitfalls.length]],bullets:rotate(pitfalls,h%pitfalls.length,3)},
+    {title:'단기 준비와 장기 준비의 우선순위는 다릅니다',paragraphs:[timeline[h%timeline.length],timeline[(h+1)%timeline.length],`남은 기간이 짧을수록 새로운 범위를 넓히기보다 이미 배운 내용을 실제 문제·답변·글에 적용하는 비중을 높이는 편이 좋습니다.`]},
+    {title:`${areaText} 생활권에서 화상 1:1을 활용한다면`,paragraphs:[`${region.name} 안에서도 이동 시간과 생활 패턴은 다를 수 있습니다. 실시간 화상 수업은 위치보다 가능한 시간대와 ${angle.practice}을 얼마나 반복할 수 있는지를 기준으로 선택할 수 있습니다.`,`온라인 수업도 일방적인 설명보다 학습자가 직접 말하고 쓰고 풀어본 결과를 기준으로 피드백이 남아야 합니다. 수업 후 무엇을 다시 연습할지까지 확인해보세요.`]},
+    {title:`${course.name} 피드백은 '정답 확인'에서 끝나지 않아야 합니다`,paragraphs:[`틀린 이유를 듣는 것과 다음 시도에서 스스로 수정하는 것은 다릅니다. 피드백 후 같은 유형이나 비슷한 질문을 다시 수행해 수정 내용이 실제로 적용되는지 확인해야 합니다.`,`반복 오류는 별도로 기록해 다음 수업의 우선순위에 반영하면 매번 새로운 내용을 넓게 다루는 것보다 학습 효율을 높일 수 있습니다.`]},
+    {title:'무료 체험이나 상담에서 확인할 질문',paragraphs:[`현재 수준을 어떤 방식으로 확인하는지, 목표까지 남은 기간에 따라 무엇을 먼저 할지, 수업 중 직접 수행하는 시간이 얼마나 되는지를 물어보는 것이 좋습니다.`,`특히 ${audience}라면 일반적인 커리큘럼 설명보다 자신의 약점에 맞춰 첫 몇 주의 학습 방향이 어떻게 달라지는지 확인해보세요.`],bullets:['현재 수준을 실제 수행으로 확인하는가','목표 날짜와 결과 기준을 반영하는가','피드백 뒤 재시도 과정이 있는가','수업 밖 복습 방법이 구체적인가']}
+  ]
+  const order=[0,1,2,3,4,5,6,7]
+  const shift=h%4
+  const shifted=order.slice(shift).concat(order.slice(0,shift))
+  const sections=shifted.slice(0,6).map(i=>sectionPool[i])
+  const baseFaq=profile?.faq || []
+  const faq=[
+    ...(baseFaq.length?rotate(baseFaq,h%baseFaq.length,2):[]),
+    {q:`${region.name}에서 ${course.name} 화상 1:1 수업도 가능한가요?`,a:`가능합니다. 화상 방식이라면 ${areaText} 등 세부 생활권과 관계없이 일정 조율 후 진행할 수 있습니다. 위치보다 목표 진단과 실제 수행·피드백 구조를 함께 비교하는 것이 좋습니다.`},
+    {q:`${course.name} 준비에서 수업 횟수는 어떻게 정하나요?`,a:'목표 날짜, 현재 수준, 개인 복습 가능 시간을 함께 보고 정하는 편이 좋습니다. 단기간일수록 수업 횟수만 늘리기보다 수업 사이 재연습까지 가능한지 확인해야 합니다.'}
+  ].slice(0,4)
+  const h1Variants=[
+    `${region.name} ${course.name}${intentName}, 목표에 맞춘 1:1 준비 방법`,
+    `${region.name} ${course.name}${intentName} 시작 전 확인할 학습 기준`,
+    `${region.name} ${course.name}${intentName}, 현재 수준부터 목표까지 준비하는 법`,
+    `${region.name} ${course.name} 1:1 수업, 단기·장기 목표별 준비 기준`
+  ]
+  const h1=h1Variants[h%h1Variants.length]
+  const regionalLinks=getRegionalEnglishLinks(regionSlug)
+  const related=[
+    ...regionalLinks,
+    {href:`/${course.slug}`,label:`${course.name} 학습 안내`},
+    ...(courseSlug==='ielts'?[{href:'/ielts/writing',label:'IELTS Writing'},{href:'/ielts/speaking',label:'IELTS Speaking'}]:[]),
+    ...(courseSlug==='toefl'?[{href:'/toefl/writing',label:'TOEFL Writing'},{href:'/toefl/speaking',label:'TOEFL Speaking'}]:[]),
+    ...(courseSlug==='international-school'?[{href:'/guide/international-school-interview',label:'국제학교 인터뷰 가이드'},{href:'/guide/international-school-writing',label:'국제학교 Writing 가이드'}]:[]),
+    ...(courseSlug==='study-abroad'?[{href:'/guide/study-abroad-english',label:'유학영어 준비 가이드'}]:[]),
+    ...(courseSlug==='english-writing'?[{href:'/ielts/writing',label:'IELTS Writing'},{href:'/toefl/writing',label:'TOEFL Writing'}]:[]),
+    {href:'/english-interview',label:'영어 인터뷰'},
+    {href:'/english-writing',label:'영어 라이팅'}
+  ].filter((item,index,arr)=>arr.findIndex(x=>x.href===item.href)===index).slice(0,12)
+  return {
+    title:`${h1} | 규잉글리시`,
+    description:`${region.name} ${course.name}${intentName} 준비 방법을 현재 수준, ${angle.score}, ${angle.practice} 기준으로 정리했습니다. ${areaText} 생활권에서 1:1 화상 수업을 비교할 때 확인할 항목도 함께 살펴보세요.`,
+    eyebrow:`${region.name} · ${course.name}${intentName}`,
+    h1,
+    intro:introVariants[h%introVariants.length],
+    targetKeywords:[`${region.name} ${course.name}${intentName}`,`${region.name} ${angle.second.split('·')[0]}`,`${region.name} ${angle.second.split('·')[1]||'1:1 수업'}`,angle.score],
+    sections,
+    faq,
+    related,
+    ctaTitle:`${course.name} 목표와 현재 수준부터 확인하세요`,
+    ctaText:`${angle.score}과 남은 기간을 기준으로 우선순위를 정하면 필요한 연습 범위를 더 구체적으로 잡을 수 있습니다.`
+  }
+}
+
 export function getLandingContent(regionSlug:string, courseSlug:string, intent:SearchIntent='general'): LandingContent | undefined {
   if(!isBaseLandingPage(regionSlug,courseSlug)) return undefined
   const region=getRegion(regionSlug); const course=getCourse(courseSlug); const angle=courseAngles[courseSlug]
   if(!region||!course||!angle) return undefined
   if(courseSlug==='english-conversation') return getEnglishConversationContent(regionSlug,intent,region,course)
-  const areaText=region.localAreas.slice(0,3).join('·')
-  return {
-    title:`${region.name} ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':' 1:1 수업'} | 목표별 준비`,
-    description:`${region.name} ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':' 1:1 수업'}을 찾을 때 확인할 준비 방법과 선택 기준을 안내합니다. 현재 수준, 목표, 시험·사용 목적에 맞춰 필요한 연습을 확인하세요.`,
-    eyebrow:`${region.name} · ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':''}`,
-    h1:`${region.name} ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':''}, 목표에 맞는 준비 방법`,
-    intro:`${region.name}에서 ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':' 수업'}을 찾는다면 위치나 수업 횟수부터 정하기보다 현재 수준과 목표를 먼저 확인하는 것이 좋습니다. ${course.name}에서 중요한 것은 ${angle.goal}입니다. ${areaText} 등 어느 생활권에서 검색하더라도 화상 수업이라면 이동 거리보다 실제 연습량과 피드백 방식을 우선해 비교할 수 있습니다.`,
-    targetKeywords:[`${region.name} ${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':''}`,`${region.name} ${angle.second.split('·')[0]}`,`${region.name} ${angle.second.split('·')[1]||'1:1 수업'}`,angle.score],
-    sections:[
-      {title:`${course.name} 준비 전, 현재 수준부터 확인하세요`,paragraphs:[`같은 목표를 가지고 있어도 시작점은 다릅니다. 이미 기본 문장을 빠르게 만들 수 있는 학습자와 단어를 조합해 짧게 답하는 학습자는 같은 교재를 같은 속도로 진행할 필요가 없습니다. 첫 단계에서는 ${angle.score}만 정하기보다 실제 수행 수준을 확인해야 합니다.`,`진단에서는 알고 있는 지식보다 실제로 말하거나 쓰는 과정에서 어디에서 막히는지를 보는 편이 좋습니다. 그 결과를 기준으로 학습량을 배분하면 불필요한 반복을 줄일 수 있습니다.`]},
-      {title:`${region.name}에서 수업을 비교할 때 '내가 직접 하는 시간'을 보세요`,paragraphs:[`${course.name}은 설명을 오래 듣는 것만으로 결과를 확인하기 어렵습니다. 수업 중 ${angle.practice}을 직접 수행하고, 피드백을 받은 뒤 다시 시도하는 시간이 충분한지 확인하는 것이 중요합니다.`,`특히 일정이 바쁜 성인이나 학생이라면 한 번의 수업 시간을 길게 잡는 것보다 복습과 재연습이 가능한 주기를 만드는 것이 더 효과적일 수 있습니다.`],bullets:['현재 수준에 맞는 과제량','수업 중 직접 말하거나 쓰는 시간','피드백 후 재시도 과정']},
-      {title:`${angle.score}에 맞춰 학습 우선순위를 정하세요`,paragraphs:[`목표가 명확할수록 모든 영역을 같은 비중으로 공부할 필요는 없습니다. ${course.name}에서 자주 막히는 영역과 결과에 직접 영향을 주는 요소를 먼저 찾아 우선순위를 정하는 편이 효율적입니다.`,`단기간 목표라면 실전 형식에 익숙해지는 과정이 중요하고, 기초가 부족하다면 실전 문제만 반복하기보다 필요한 문장·어휘·구조를 함께 보완해야 합니다.`]},
-      {title:`${course.name}${intent==='academy'?'학원':intent==='tutoring'?'과외':' 수업'}을 고를 때 확인할 기준`,paragraphs:[`검색 결과가 많을수록 수업 이름이나 광고 문구보다 실제 진행 방식을 비교하는 편이 좋습니다. ${course.name}에서는 ${angle.practice}이 핵심이므로, 설명을 듣는 시간과 학습자가 직접 수행하는 시간이 어떻게 구성되는지 확인해보세요.`,`또한 목표까지 남은 기간에 따라 수업의 우선순위가 달라질 수 있습니다. 시간이 충분하다면 기초와 실전 적용을 함께 쌓을 수 있지만, 시험이나 출국 일정이 가까운 경우에는 결과에 직접 영향을 주는 약점을 먼저 정리하는 방식이 현실적입니다.`],bullets:['첫 수업 전 현재 수준을 확인하는지','목표와 기간에 맞춰 진도를 조정하는지','수업 후 복습할 자료나 피드백이 남는지','약점이 바뀌면 수업 계획도 함께 조정되는지']},
-      {title:`${region.name} ${course.name}, 단기간 준비와 장기 준비는 다릅니다`,paragraphs:[`단기간에는 새로운 내용을 넓게 배우기보다 이미 알고 있는 내용을 실제 결과로 연결하는 연습의 비중을 높이는 편이 좋습니다. 반대로 기초부터 준비할 시간이 있다면 어휘·문장 구조·이해력 같은 기반을 보완하면서 실전 난도를 단계적으로 높일 수 있습니다.`,`따라서 상담 단계에서 단순히 주 몇 회 수업을 할지 결정하기보다 목표 시점, 현재 수준, 개인적으로 확보할 수 있는 복습 시간을 함께 확인해야 합니다. 같은 ${angle.score}을 목표로 하더라도 이 조건에 따라 필요한 수업 계획은 달라질 수 있습니다.`]},
-      {title:`${areaText} 등 ${region.name} 생활권에서 화상 1:1을 활용한다면`,paragraphs:[`화상 수업은 지역 내 이동 시간을 줄이고 일정 선택 폭을 넓힐 수 있습니다. 다만 온라인이라는 이유만으로 좋은 수업이 되는 것은 아닙니다. 화면을 통해서도 학습자가 직접 수행하고 즉시 피드백을 받는 구조가 있어야 합니다.`,`따라서 ${region.name} ${course.name}을 찾을 때는 가까운 곳이라는 조건과 함께 목표 진단, 수업 기록, 복습 방식까지 확인해보는 것이 좋습니다. 특히 일정이 불규칙하다면 고정 시간만 가능한지, 사전에 조율할 수 있는 범위가 어디까지인지도 함께 살펴보면 실제 학습을 오래 유지하는 데 도움이 됩니다.`]}
-    ],
-    faq:[
-      {q:`${course.name} 왕초보도 시작할 수 있나요?`,a:'가능합니다. 다만 기초 단계에서는 실전 문제만 반복하기보다 필요한 문장 구조와 핵심 표현을 함께 보완하면서 난도를 높이는 편이 좋습니다.'},
-      {q:'1:1 수업은 어떤 점을 확인해야 하나요?',a:'현재 수준 진단, 학습자가 직접 수행하는 시간, 피드백 후 재시도 과정, 목표에 맞는 과제량이 있는지 확인하는 것이 좋습니다.'},
-      {q:`${region.name} 외 지역에서도 화상 수업이 가능한가요?`,a:'화상 방식이라면 거주 지역과 관계없이 일정 조율 후 진행할 수 있습니다. 지역 페이지는 해당 지역 검색자의 선택 기준을 돕기 위한 안내입니다.'}
-    ],
-    related:[{href:`/${region.slug}`,label:`${region.name} 영어회화`},{href:`/${course.slug}`,label:`${course.name} 학습 안내`},{href:'/english-writing',label:'영어 라이팅'},{href:'/english-interview',label:'영어 인터뷰'}],
-    ctaTitle:`${course.name} 목표와 현재 수준부터 확인하세요`,
-    ctaText:'목표만 정해두기보다 지금 가능한 수준을 확인하면 필요한 학습 기간과 우선순위를 더 구체적으로 정할 수 있습니다.'
-  }
+  return getCourseSpecificContent(regionSlug,courseSlug,intent,region,course,angle)
 }
