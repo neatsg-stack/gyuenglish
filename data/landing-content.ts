@@ -619,7 +619,7 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
   const intentSections: Record<SearchIntent, LandingContent['sections'][number]> = {
     general: {
       title:`${course.name} 준비는 목표와 현재 수준의 차이부터 확인하세요`,
-      paragraphs:[`학습자의 출발점은 서로 다릅니다. 목표와 현재 실력의 차이를 확인하고, ${angle.practice}에서 반복되는 약점을 구분해야 학습 시간을 효율적으로 배분할 수 있습니다.`,`준비 기간이 짧다면 점수나 수행 결과에 직접 영향을 주는 부분부터, 기간이 충분하다면 기초 이해와 실전 적용을 함께 보완하는 방향으로 계획을 세워보세요.`],
+      paragraphs:[diagnostics[h % diagnostics.length], practice[h % practice.length]],
       bullets:['현재 수준과 목표 결과의 차이 확인','취약 영역별 연습 우선순위 설정','남은 기간과 복습 가능 시간을 고려한 계획']
     },
     academy: {
@@ -671,33 +671,105 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
       }
     ]
   }
-  const intentCoreIndexes: Record<SearchIntent, number[]> = {
-    general: [0, 1, 2, 3, 4, 6],
-    academy: [0, 2, 3, 4],
-    tutoring: [0, 1, 2, 6]
-  }
-  const sections = [
-    intentSections[intent],
-    ...(courseSlug === 'opic' && intent === 'general' && opicRegionalLearning[regionSlug]
+  /*
+   * Course-specific content is now the primary body of exam landing pages.
+   *
+   * Previous versions alternated exam information with generic sectionPool
+   * paragraphs. That produced pages that were technically varied but still
+   * felt templated. The new structure keeps each page focused on concrete
+   * exam skills, problems and practice methods.
+   */
+  const examKnowledgeSections: LandingContent['sections'] = [
+    ...(courseSlug === 'opic' && opicRegionalLearning[regionSlug]
       ? [opicRegionalLearning[regionSlug]]
-      : intent === 'general' && examDeepDive[courseSlug]
-        ? [examDeepDive[courseSlug][h % examDeepDive[courseSlug].length]]
-        : []),
-    ...(intent === 'general' ? [] : intentDetailSections[intent]),
-    ...(intent === 'general' && (
-      examDeepDive[courseSlug] ||
-      (courseSlug === 'opic' && opicRegionalLearning[regionSlug])
-    )
-      ? examLearningScenarios[courseSlug]
-        ? [
-            examLearningScenarios[courseSlug][h % examLearningScenarios[courseSlug].length],
-            sectionPool[2],
-            examLearningScenarios[courseSlug][(h + 1 + Math.floor(h / 7) % (examLearningScenarios[courseSlug].length - 1)) % examLearningScenarios[courseSlug].length],
-            sectionPool[6]
-          ]
-        : [0, 2, 4, 6].map(i => sectionPool[i])
-      : intentCoreIndexes[intent].map(i => sectionPool[i]))
+      : []),
+    ...(examDeepDive[courseSlug] || []),
+    ...(examLearningScenarios[courseSlug] || [])
   ]
+
+  const uniqueExamKnowledge = examKnowledgeSections.filter(
+    (section, index, array) =>
+      array.findIndex(candidate => candidate.title === section.title) === index
+  )
+
+  const rotateKnowledge = (
+    items: LandingContent['sections'],
+    offset: number,
+    count: number
+  ): LandingContent['sections'] => {
+    if (!items.length) return []
+
+    const result: LandingContent['sections'] = []
+
+    for (
+      let index = 0;
+      index < Math.min(count, items.length);
+      index += 1
+    ) {
+      result.push(items[(offset + index) % items.length])
+    }
+
+    return result
+  }
+
+  /*
+   * Hashing is used only to choose the starting topic.
+   * It no longer assembles unrelated generic paragraphs.
+   */
+  const knowledgeOffset = uniqueExamKnowledge.length
+    ? h % uniqueExamKnowledge.length
+    : 0
+
+  const generalKnowledgeSections = rotateKnowledge(
+    uniqueExamKnowledge,
+    knowledgeOffset,
+    6
+  )
+
+  const intentKnowledgeSections = rotateKnowledge(
+    uniqueExamKnowledge,
+    knowledgeOffset,
+    2
+  )
+
+  /*
+   * Courses without a dedicated exam knowledge pack still receive a coherent
+   * educational sequence instead of randomly selected generic sections.
+   */
+  const fallbackGeneralSections: LandingContent['sections'] = [
+    sectionPool[0],
+    sectionPool[1],
+    sectionPool[2],
+    sectionPool[3],
+    sectionPool[4],
+    sectionPool[6]
+  ]
+
+  const fallbackIntentSections: LandingContent['sections'] = [
+    sectionPool[0],
+    sectionPool[2],
+    sectionPool[4],
+    sectionPool[6]
+  ]
+
+  const sections: LandingContent['sections'] =
+    intent === 'general'
+      ? [
+          intentSections.general,
+          ...(generalKnowledgeSections.length
+            ? generalKnowledgeSections
+            : fallbackGeneralSections)
+        ]
+      : [
+          intentSections[intent],
+          ...intentDetailSections[intent],
+          ...(intentKnowledgeSections.length
+            ? intentKnowledgeSections
+            : fallbackIntentSections.slice(0, 2)),
+          sectionPool[4],
+          sectionPool[6]
+        ]
+
   const baseFaq=profile?.faq || []
   const intentFaq: Record<SearchIntent, {q:string;a:string}[]> = {
     general: [],

@@ -1,0 +1,35 @@
+type ConsultationCTAProps = {
+  title?: string
+  text?: string
+  compact?: boolean
+}
+
+export default function ConsultationCTA({
+  title = '?? ??? ??? ?? ?? ??? ?????',
+  text = '?? ??, ?? ??, ??? ?? ??? ?? ??? ? ??? ?? ??? ???????.',
+  compact = false,
+}: ConsultationCTAProps) {
+  return (
+    <aside
+      className={compact ? 'consultation-cta compact-consultation-cta' : 'consultation-cta'}
+    >
+      <div className="consultation-content">
+        <p className="consultation-label">1:1 ?? ?? ??</p>
+        <h2>{title}</h2>
+        <p className="consultation-copy">{text}</p>
+      </div>
+
+      <div className="consultation-action">
+        <span>?? ??</span>
+        <a
+          className="consultation-phone"
+          href="tel:01096218833"
+          aria-label="010-9621-8833 ?? ??"
+        >
+          010-9621-8833
+        </a>
+        <p>?????? ??? ??? ?? ?????.</p>
+      </div>
+    </aside>
+  )
+}

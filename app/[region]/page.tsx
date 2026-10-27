@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import ConversionVisuals from '@/components/ConversionVisuals'
 import { courses } from '@/data/courses'
 import { getRegion, regions } from '@/data/regions'
 import { regionContent } from '@/data/region-content'
@@ -86,11 +85,21 @@ export default async function RegionPage({ params }: Props) {
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }} />
 
-      <ConversionVisuals
-        context={`${region.name} 1:1 영어수업`}
-        title={`${region.name}에서 영어를 배우는데도\n막상 말하려면 막히나요?`}
-        subtitle="수업을 더 늘리기 전에 현재 수준과 목표부터 확인해보세요. 필요한 부분부터 우선순위를 정해 안내합니다."
-      />
+      <header className="region-text-hero">
+        <nav className="breadcrumb" aria-label="breadcrumb">
+          <Link href="/">?</Link> ? {region.name}
+        </nav>
+        <p className="eyebrow">1:1 ENGLISH LEARNING</p>
+        <h1>{region.name} ????,<br /><span>???? ?? ?? ??? ?????.</span></h1>
+        <p>
+          ??? ?? ?????? ?? ? ??? ??? ????
+          ????? ?? ????? ????? ???? ??? ???? ???? ?? ?????.
+        </p>
+        <div className="lead-actions">
+          <a className="lead-primary" href="tel:01096218833">010-9621-8833 ??</a>
+          <a className="lead-secondary" href="#courses">??? ?? ??</a>
+        </div>
+      </header>
 
       <article className="seo-zone seo-tail region-seo-zone">
         <nav className="breadcrumb" aria-label="breadcrumb"><Link href="/">홈</Link> › {region.name}</nav>
@@ -106,7 +115,7 @@ export default async function RegionPage({ params }: Props) {
           <div className="section-heading"><h2>{region.name}에서 1:1 영어수업을 고를 때 확인할 점</h2></div>
           <div className="check-list">
             {checkpoints.map((item, index) => (
-              <div className="check-item" key={item.title}>
+              <div className="check-item" key={`${item.title}-${index}`}>
                 <span>{String(index + 1).padStart(2, '0')}</span>
                 <div><h3>{item.title}</h3><p>{item.body}</p></div>
               </div>
@@ -154,7 +163,7 @@ export default async function RegionPage({ params }: Props) {
 
         <section id="faq" className="faq-section">
           <div className="section-heading"><h2>{region.name} 영어회화 자주 묻는 질문</h2></div>
-          {faq.map((item) => <details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}
+          {faq.map((item, faqIndex) => <details key={`${item.question}-${faqIndex}`}><summary>{item.question}</summary><p>{item.answer}</p></details>)}
         </section>
       </article>
     </main>

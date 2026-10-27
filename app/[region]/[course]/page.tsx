@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import ConversionImageStack from '@/components/ConversionImageStack'
+import ConsultationCTA from '@/components/ConsultationCTA'
 import { getCourse } from '@/data/courses'
 import { expandedLandingPages, isLandingPage } from '@/data/landing-pages'
 import { getLandingContent } from '@/data/landing-content'
@@ -37,13 +37,53 @@ export default async function RegionCoursePage({ params }: Props) {
   const faqLd={'@context':'https://schema.org','@type':'FAQPage',mainEntity:content.faq.map(item=>({'@type':'Question',name:item.q,acceptedAnswer:{'@type':'Answer',text:item.a}}))}
   return <main>
     <JsonLd data={breadcrumbLd}/><JsonLd data={faqLd}/>
-    <ConversionImageStack courseSlug={courseSlug} courseName={course.name}/>
+
     <article className="seo-zone course-seo-zone seo-tail">
       <nav className="breadcrumb"><Link href="/">홈</Link> › <Link href={`/${region.slug}`}>{region.name}</Link> › {course.name}{intentName}</nav>
       <section className="seo-intro-section"><p className="seo-section-label">{region.name} {course.name}{intentName} 학습 정보</p><h1>{content.h1}</h1><p>{content.intro}</p></section>
-      {content.sections.map((section,index)=><section key={section.title} className={index%2===1?'soft-section prose-section seo-block':'prose-section seo-reading-section'}><div className="section-heading"><h2>{section.title}</h2></div>{section.paragraphs.map(p=><p key={p}>{p}</p>)}{section.bullets&&<ul className="seo-bullets">{section.bullets.map(b=><li key={b}>{b}</li>)}</ul>}</section>)}
-      <section className="link-cloud-section"><div className="section-heading"><h2>{courseSlug === 'english-conversation' ? `${region.name}와 함께 찾는 영어회화 지역·과정` : '함께 확인하면 좋은 영어수업'}</h2></div><div className="related-links chip-links">{content.related.map(item=><Link key={item.href} href={item.href}>{item.label}</Link>)}</div></section>
-      <section className="faq-section"><div className="section-heading"><h2>{region.name} {course.name}{intentName} 준비에서 자주 묻는 질문</h2></div>{content.faq.map(item=><details key={item.q}><summary>{item.q}</summary><p>{item.a}</p></details>)}</section>
+      {content.sections.map((section,index)=>(
+        <div key={`${section.title}-${index}`} className="landing-section-wrap">
+
+          <section
+            className={
+              index%2===1
+                ? 'soft-section prose-section seo-block'
+                : 'prose-section seo-reading-section'
+            }
+          >
+
+            <div className="section-heading">
+
+              <span className="section-number">
+                {String(index+1).padStart(2,'0')}
+              </span>
+
+              <h2>{section.title}</h2>
+
+            </div>
+
+            {section.paragraphs.map((p,paragraphIndex)=>(
+              <p key={`${index}-paragraph-${paragraphIndex}`}>{p}</p>
+            ))}
+
+            {section.bullets&&(
+              <ul className="seo-bullets">
+                {section.bullets.map((b,bulletIndex)=>(
+                  <li key={`${index}-bullet-${bulletIndex}`}>{b}</li>
+                ))}
+              </ul>
+            )}
+
+          </section>
+
+          {(index===1||index===4)&&(
+            <ConsultationCTA compact/>
+          )}
+
+        </div>
+      ))}
+      <section className="link-cloud-section"><div className="section-heading"><h2>{courseSlug === 'english-conversation' ? `${region.name}와 함께 찾는 영어회화 지역·과정` : '함께 확인하면 좋은 영어수업'}</h2></div><div className="related-links chip-links">{content.related.map((item,relatedIndex)=><Link key={`${item.href}-${relatedIndex}`} href={item.href}>{item.label}</Link>)}</div></section>
+      <section className="faq-section"><div className="section-heading"><h2>{region.name} {course.name}{intentName} 준비에서 자주 묻는 질문</h2></div>{content.faq.map((item,faqIndex)=><details key={`${item.q}-${faqIndex}`}><summary>{item.q}</summary><p>{item.a}</p></details>)}</section>
     </article>
   </main>
 }

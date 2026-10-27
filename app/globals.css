@@ -115,3 +115,867 @@
 @media (max-width:760px){
   .conversion-image-stack{width:100%;}
 }
+
+
+/* STEP 184E PROFESSIONAL TEXT LANDING */
+
+.landing-section-wrap {
+  position:relative;
+}
+
+.section-number {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:38px;
+  height:28px;
+  margin-bottom:10px;
+  padding:0 10px;
+  border-radius:999px;
+  background:#edf3ff;
+  color:#2457d6;
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.06em;
+}
+
+.prose-section {
+  position:relative;
+}
+
+.prose-section p {
+  max-width:860px;
+  line-height:1.92;
+  color:#46546a;
+}
+
+.seo-bullets {
+  max-width:850px;
+  margin:22px 0 4px;
+  padding:0;
+  list-style:none;
+  display:grid;
+  gap:9px;
+}
+
+.seo-bullets li {
+  position:relative;
+  padding:13px 15px 13px 38px;
+  border:1px solid #e1e7ef;
+  border-radius:12px;
+  background:#fff;
+  color:#344258;
+  line-height:1.65;
+}
+
+.seo-bullets li::before {
+  content:"✓";
+  position:absolute;
+  left:14px;
+  top:13px;
+  color:#2457d6;
+  font-weight:900;
+}
+
+.consultation-cta {
+  max-width:920px;
+  margin:44px auto;
+  padding:38px 40px;
+  border-radius:24px;
+  background:#10203d;
+  color:#fff;
+  box-shadow:0 18px 50px rgba(15,32,61,.12);
+}
+
+.consultation-label {
+  margin:0 0 7px !important;
+  color:#9fc2ff !important;
+  font-size:.82rem !important;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.consultation-cta h2 {
+  max-width:720px;
+  margin:0 0 10px;
+  color:#fff;
+  font-size:clamp(1.55rem,3vw,2.15rem);
+  line-height:1.3;
+}
+
+.consultation-copy {
+  max-width:730px !important;
+  margin:0 0 22px !important;
+  color:#dbe7fb !important;
+  line-height:1.75 !important;
+}
+
+.consultation-phone {
+  display:inline-block;
+  color:#fff;
+  font-size:clamp(2rem,5vw,3.2rem);
+  line-height:1.1;
+  font-weight:950;
+  letter-spacing:-.045em;
+  text-decoration:none;
+}
+
+.consultation-phone:hover {
+  text-decoration:underline;
+}
+
+.consultation-note {
+  margin:12px 0 0 !important;
+  color:#aebfd8 !important;
+  font-size:.82rem !important;
+}
+
+.compact-consultation-cta {
+  margin:30px auto 42px;
+  padding:28px 32px;
+  border-radius:20px;
+}
+
+.compact-consultation-cta h2 {
+  font-size:1.45rem;
+}
+
+.compact-consultation-cta .consultation-phone {
+  font-size:clamp(1.8rem,4vw,2.55rem);
+}
+
+.sticky-phone strong {
+  display:block;
+  font-size:1rem;
+  letter-spacing:-.02em;
+}
+
+@media(max-width:760px) {
+
+  .consultation-cta {
+    margin:30px 0;
+    padding:27px 22px;
+    border-radius:18px;
+  }
+
+  .compact-consultation-cta {
+    margin:22px 0 30px;
+    padding:24px 20px;
+  }
+
+  .consultation-phone {
+    font-size:2.05rem;
+  }
+
+  .consultation-note {
+    display:none;
+  }
+
+  .seo-bullets li {
+    padding:11px 12px 11px 34px;
+    font-size:.92rem;
+  }
+
+  .sticky-phone {
+    text-align:center;
+  }
+
+  .sticky-phone span {
+    font-size:.7rem;
+  }
+
+  .sticky-phone strong {
+    font-size:.9rem;
+  }
+}
+
+
+/* STEP 185B - INFORMATION FIRST LANDING SYSTEM */
+
+.home-hero-v2 {
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);
+  gap:64px;
+  align-items:center;
+  padding:96px 0 82px;
+  border-bottom:1px solid #e5eaf2;
+}
+
+.home-hero-copy h1,
+.course-hero-v2 h1 {
+  margin:12px 0 24px;
+  font-size:clamp(40px,5.4vw,68px);
+  line-height:1.12;
+  letter-spacing:-.055em;
+  color:#111827;
+}
+
+.home-hero-copy h1 span,
+.course-hero-v2 h1 span {
+  color:#2457d6;
+}
+
+.home-hero-description,
+.course-hero-v2 > p:not(.eyebrow) {
+  max-width:720px;
+  margin:0;
+  color:#536077;
+  font-size:18px;
+  line-height:1.85;
+}
+
+.home-hero-actions {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:32px;
+}
+
+.home-trust-row {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:30px;
+}
+
+.home-trust-row span {
+  padding:7px 11px;
+  border:1px solid #dce4ef;
+  border-radius:999px;
+  color:#58657a;
+  font-size:13px;
+  font-weight:700;
+}
+
+.home-hero-panel {
+  padding:34px;
+  border:1px solid #dfe6f0;
+  border-radius:24px;
+  background:#f8fafc;
+}
+
+.home-panel-label,
+.home-path-label {
+  margin:0 0 10px;
+  color:#2457d6;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+
+.home-hero-panel h2 {
+  margin:0;
+  font-size:25px;
+  letter-spacing:-.035em;
+}
+
+.home-check-list {
+  margin:27px 0 0;
+  padding:0;
+  list-style:none;
+  counter-reset:item;
+}
+
+.home-check-list li {
+  padding:18px 0;
+  border-top:1px solid #e1e7ef;
+}
+
+.home-check-list strong,
+.home-check-list span {
+  display:block;
+}
+
+.home-check-list strong {
+  color:#182235;
+  font-size:15px;
+}
+
+.home-check-list span {
+  margin-top:5px;
+  color:#6b778a;
+  font-size:13px;
+}
+
+.home-problem-section,
+.home-method-section,
+.home-course-paths,
+.home-example-section,
+.home-selection-section,
+.home-all-courses,
+.home-regions {
+  padding:82px 0;
+}
+
+.home-section-intro {
+  max-width:760px;
+  margin-bottom:34px;
+}
+
+.home-section-intro h2 {
+  margin:8px 0 16px;
+  font-size:clamp(30px,4vw,44px);
+  line-height:1.2;
+  letter-spacing:-.045em;
+}
+
+.home-section-intro > p:last-child {
+  color:#5d697d;
+  font-size:17px;
+}
+
+.home-diagnosis-grid,
+.home-selection-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.home-diagnosis-grid article,
+.home-selection-grid article,
+.course-check-grid article {
+  padding:28px;
+  border:1px solid #e0e6ef;
+  border-radius:18px;
+  background:#fff;
+}
+
+.home-diagnosis-grid article > span {
+  display:inline-block;
+  margin-bottom:18px;
+  padding:5px 9px;
+  border-radius:7px;
+  background:#edf3ff;
+  color:#2457d6;
+  font-size:12px;
+  font-weight:800;
+}
+
+.home-diagnosis-grid h3,
+.home-selection-grid h3,
+.course-check-grid h3,
+.home-path-card h3 {
+  margin:0 0 12px;
+  color:#172033;
+  font-size:20px;
+  line-height:1.4;
+  letter-spacing:-.025em;
+}
+
+.home-diagnosis-grid p,
+.home-selection-grid p,
+.course-check-grid p,
+.home-path-card > p:not(.home-path-label) {
+  margin:0;
+  color:#647084;
+  font-size:15px;
+  line-height:1.8;
+}
+
+.home-method-section {
+  border-top:1px solid #e7ebf1;
+  border-bottom:1px solid #e7ebf1;
+}
+
+.home-method-list article {
+  display:grid;
+  grid-template-columns:72px 1fr;
+  gap:26px;
+  padding:30px 0;
+  border-top:1px solid #e4e9f0;
+}
+
+.home-method-list article:first-child {
+  border-top:0;
+}
+
+.home-method-number {
+  color:#2457d6;
+  font-size:15px;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+
+.home-method-list h3 {
+  margin:0 0 8px;
+  font-size:21px;
+}
+
+.home-method-list p {
+  max-width:760px;
+  margin:0;
+  color:#616d80;
+}
+
+.home-path-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+
+.home-path-card {
+  padding:30px;
+  border:1px solid #dfe5ee;
+  border-radius:20px;
+}
+
+.home-path-links {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+
+.home-path-links a {
+  padding:8px 11px;
+  border-radius:8px;
+  background:#f3f6fa;
+  color:#34445e;
+  font-size:13px;
+  font-weight:700;
+}
+
+.home-path-links a:hover {
+  background:#e9f0ff;
+  color:#2457d6;
+}
+
+.home-example-section {
+  border-top:1px solid #e7ebf1;
+  border-bottom:1px solid #e7ebf1;
+}
+
+.home-example-layout {
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);
+  gap:38px;
+}
+
+.home-example-main {
+  max-width:720px;
+}
+
+.home-example-main h3 {
+  margin-top:0;
+  font-size:24px;
+}
+
+.home-example-main p {
+  color:#566378;
+  font-size:16px;
+  line-height:1.9;
+}
+
+.home-example-side {
+  align-self:start;
+  padding:27px;
+  border-radius:18px;
+  background:#172033;
+  color:#fff;
+}
+
+.home-example-side > p {
+  margin-top:0;
+  font-weight:800;
+}
+
+.home-example-side ul {
+  padding-left:20px;
+  color:#d8dfeb;
+  line-height:1.9;
+}
+
+.home-example-side a {
+  display:inline-block;
+  margin-top:10px;
+  color:#fff;
+  font-weight:800;
+}
+
+.home-selection-grid {
+  grid-template-columns:repeat(4,1fr);
+}
+
+.home-selection-grid article > strong,
+.course-check-grid article > span {
+  display:block;
+  margin-bottom:22px;
+  color:#2457d6;
+  font-size:13px;
+  letter-spacing:.08em;
+}
+
+.home-final-cta {
+  margin:50px 0 100px;
+  padding:64px;
+  border-radius:26px;
+  background:#172033;
+  color:#fff;
+}
+
+.home-final-cta .eyebrow {
+  color:#8fb0ff;
+}
+
+.home-final-cta h2 {
+  margin:8px 0 16px;
+  color:#fff;
+  font-size:clamp(32px,4vw,46px);
+  letter-spacing:-.045em;
+}
+
+.home-final-cta > p:not(.eyebrow) {
+  max-width:700px;
+  color:#d6deea;
+}
+
+.home-final-cta > a {
+  display:inline-block;
+  margin-top:24px;
+  padding:13px 19px;
+  border-radius:10px;
+  background:#fff;
+  color:#172033;
+  font-size:21px;
+  font-weight:900;
+}
+
+.course-hero-v2 {
+  padding:88px 0 64px;
+  border-bottom:1px solid #e5eaf2;
+}
+
+.course-hero-v2 h1 {
+  max-width:900px;
+}
+
+.course-guide-v2 {
+  padding:68px 0;
+}
+
+.course-check-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.consultation-cta {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:42px;
+  align-items:center;
+}
+
+.consultation-action {
+  min-width:240px;
+  padding-left:30px;
+  border-left:1px solid rgba(255,255,255,.22);
+}
+
+.consultation-action > span,
+.consultation-action > p {
+  display:block;
+}
+
+.consultation-action > span {
+  margin-bottom:5px;
+  color:#bdcbe6;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+
+.consultation-action > p {
+  margin:6px 0 0;
+  color:#b8c3d5;
+  font-size:12px;
+}
+
+.compact-consultation-cta .consultation-action {
+  min-width:220px;
+}
+
+@media(max-width:900px) {
+  .home-hero-v2,
+  .home-example-layout {
+    grid-template-columns:1fr;
+  }
+
+  .home-hero-v2 {
+    gap:36px;
+    padding-top:70px;
+  }
+
+  .home-diagnosis-grid,
+  .course-check-grid {
+    grid-template-columns:1fr;
+  }
+
+  .home-selection-grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .consultation-cta {
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+
+  .consultation-action {
+    padding:22px 0 0;
+    border-left:0;
+    border-top:1px solid rgba(255,255,255,.22);
+  }
+}
+
+@media(max-width:640px) {
+  .home-hero-v2 {
+    padding:58px 0 52px;
+  }
+
+  .home-hero-copy h1,
+  .course-hero-v2 h1 {
+    font-size:38px;
+  }
+
+  .home-path-grid,
+  .home-selection-grid {
+    grid-template-columns:1fr;
+  }
+
+  .home-method-list article {
+    grid-template-columns:46px 1fr;
+    gap:14px;
+  }
+
+  .home-problem-section,
+  .home-method-section,
+  .home-course-paths,
+  .home-example-section,
+  .home-selection-section,
+  .home-all-courses,
+  .home-regions {
+    padding:58px 0;
+  }
+
+  .home-final-cta {
+    margin-bottom:80px;
+    padding:38px 25px;
+  }
+
+  .home-final-cta > a {
+    font-size:18px;
+  }
+}
+
+
+/* STEP 185E KNOWLEDGE GUIDE */
+
+.guide-page-v2,
+.guide-index-v2 {
+  background: #fff;
+}
+
+.guide-hero-v2,
+.guide-index-hero,
+.region-text-hero {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 96px 28px 76px;
+}
+
+.guide-hero-v2 h1,
+.guide-index-hero h1,
+.region-text-hero h1 {
+  max-width: 900px;
+  margin: 14px 0 24px;
+  font-size: clamp(2.45rem, 5vw, 4.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+}
+
+.region-text-hero h1 span {
+  color: #405c91;
+}
+
+.guide-lead,
+.guide-index-hero > p:last-child,
+.region-text-hero > p {
+  max-width: 760px;
+  font-size: 1.12rem;
+  line-height: 1.85;
+  color: #536078;
+}
+
+.guide-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+.guide-reading-layout {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 20px 28px 72px;
+}
+
+.guide-knowledge-section {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 24px;
+  padding: 52px 0;
+  border-top: 1px solid #e7ebf2;
+}
+
+.guide-section-number {
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  color: #7a8cad;
+}
+
+.guide-knowledge-section h2 {
+  margin: 0 0 20px;
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  line-height: 1.25;
+  letter-spacing: -.035em;
+}
+
+.guide-knowledge-section p {
+  margin: 0 0 16px;
+  font-size: 1.04rem;
+  line-height: 1.9;
+  color: #3f4b60;
+}
+
+.guide-point-list {
+  margin: 22px 0 0;
+  padding-left: 22px;
+  line-height: 1.8;
+}
+
+.guide-update-note {
+  max-width: 920px;
+  margin: 0 auto 64px;
+  padding: 20px 24px;
+  border: 1px solid #dce5f4;
+  border-radius: 16px;
+  background: #f6f9ff;
+  line-height: 1.75;
+  color: #40506a;
+}
+
+.guide-next-step {
+  max-width: 980px;
+  margin: 0 auto 64px;
+  padding: 54px;
+  border-radius: 28px;
+  background: #172033;
+  color: #fff;
+}
+
+.guide-next-step h2 {
+  max-width: 700px;
+  margin: 10px 0 18px;
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  line-height: 1.2;
+}
+
+.guide-next-step > p {
+  max-width: 760px;
+  line-height: 1.8;
+  color: #d7deea;
+}
+
+.guide-next-step .related-links a {
+  background: #fff;
+  color: #172033;
+}
+
+.guide-index-section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 28px 100px;
+}
+
+.guide-index-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.guide-index-card {
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  padding: 34px;
+  border: 1px solid #e2e7ef;
+  border-radius: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+.guide-index-card:hover {
+  transform: translateY(-3px);
+  border-color: #9aabc9;
+}
+
+.guide-index-card > span {
+  margin-bottom: 30px;
+  font-size: .76rem;
+  font-weight: 800;
+  color: #8090ad;
+}
+
+.guide-index-card strong {
+  font-size: 1.4rem;
+  letter-spacing: -.025em;
+}
+
+.guide-index-card p {
+  flex: 1;
+  margin: 12px 0 24px;
+  line-height: 1.7;
+  color: #5a667a;
+}
+
+.guide-index-card em {
+  font-style: normal;
+  font-weight: 700;
+  color: #405c91;
+}
+
+.region-text-hero {
+  padding-bottom: 52px;
+}
+
+@media (max-width: 760px) {
+  .guide-hero-v2,
+  .guide-index-hero,
+  .region-text-hero {
+    padding: 66px 20px 52px;
+  }
+
+  .guide-reading-layout,
+  .guide-index-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .guide-knowledge-section {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 38px 0;
+  }
+
+  .guide-index-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-next-step {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 34px 26px;
+  }
+}

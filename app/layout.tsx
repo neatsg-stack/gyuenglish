@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   title: { default: `${SITE_NAME} | 1:1 영어수업`, template: `%s | ${SITE_NAME}` },
   description: '영어회화, 오픽, 토익스피킹, 아이엘츠, 토플, 지텔프, 영어라이팅, 인터뷰, 국제학교와 유학영어 1:1 수업.',
   robots: { index: true, follow: true },
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
