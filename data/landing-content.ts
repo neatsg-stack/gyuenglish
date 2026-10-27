@@ -58,7 +58,24 @@ function getEnglishConversationContent(regionSlug:string, intent:SearchIntent, r
   ]
   const stride=[1,5,7,11][h%4]
   const start=h%pool.length
-  const sections=Array.from({length:6},(_,i)=>pool[(start+i*stride)%pool.length])
+  const intentSections: Record<SearchIntent, {title:string; paragraphs:string[]; bullets:string[]}> = {
+    general: {
+      title:'영어회화 공부를 시작하기 전 확인할 세 가지',
+      paragraphs:['영어회화 학습은 단어를 얼마나 아는지만으로 출발점을 정하기 어렵습니다. 익숙한 질문을 듣고 이해하는지, 짧은 문장을 스스로 만드는지, 추가 질문에 이어 답할 수 있는지를 구분해 확인하는 편이 좋습니다.','왕초보라면 기본 질문과 한두 문장 답변부터 시작하고, 읽기는 가능하지만 말이 막힌다면 이미 아는 표현을 빠르게 꺼내는 연습에 집중할 수 있습니다.'],
+      bullets:['현재 가능한 답변 길이와 질문 이해 수준 확인','여행·일상·업무 중 실제 사용할 장면 선정','수업 외에 반복할 수 있는 짧은 말하기 과제 설정']
+    },
+    academy: {
+      title:'영어회화 학원을 선택할 때 수업 방식부터 비교하세요',
+      paragraphs:['영어회화 학원은 수강료나 거리뿐 아니라 반 구성과 실제 발화 기회를 확인해야 합니다. 같은 수업 시간이라도 설명과 교재 풀이가 많은 수업인지, 학습자가 직접 질문하고 답하는 시간이 충분한지에 따라 경험이 달라질 수 있습니다.','체험이나 상담에서는 현재 수준과 반의 난도가 맞는지, 잘못 말한 표현을 어떤 방식으로 수정하는지, 결석이나 일정 변경 시 학습 흐름을 어떻게 유지할 수 있는지 살펴보세요.'],
+      bullets:['레벨별 반 구성과 학습 목표의 적합성','한 사람에게 돌아오는 실제 말하기 시간','오류 교정·복습 자료·일정 운영 방식']
+    },
+    tutoring: {
+      title:'영어회화 과외는 개인별 진단과 피드백이 중요합니다',
+      paragraphs:['개인 영어회화 수업에서는 같은 교재를 빠르게 끝내는 것보다 학습자가 반복해서 막히는 상황을 찾는 일이 먼저입니다. 질문 이해가 어려운지, 문장을 조립하는 데 시간이 걸리는지, 말은 이어가지만 표현이 부정확한지에 따라 연습 순서가 달라집니다.','상담과 체험에서는 교사가 현재 발화를 어떻게 진단하는지, 수업 중 수정한 표현을 다시 말하게 하는지, 다음 수업 전 복습할 내용을 구체적으로 제시하는지 확인하는 것이 좋습니다.'],
+      bullets:['학습 목적과 현재 발화 수준에 따른 개별 목표','실제 답변을 바탕으로 한 오류 수정과 재발화','수업 사이의 복습 과제와 다음 시간 점검 방식']
+    }
+  }
+  const sections=[intentSections[intent], ...Array.from({length:6},(_,i)=>pool[(start+i*stride)%pool.length])]
   const faqPool=[
     {q:`${region.name}에서 영어 왕초보도 1:1 회화를 시작할 수 있나요?`,a:'가능합니다. 처음에는 긴 프리토킹보다 짧은 기본 문장과 질문·답변부터 시작해 발화 길이를 단계적으로 늘리는 방식이 적합합니다.'},
     {q:'화상 영어회화도 실시간 교정을 받을 수 있나요?',a:'실시간 수업이라면 발화 오류를 바로 수정하고 화면 공유나 채팅으로 표현을 기록할 수 있습니다. 중요한 것은 수정 뒤에 학습자가 직접 다시 말하는 시간이 충분한지입니다.'},
@@ -67,7 +84,20 @@ function getEnglishConversationContent(regionSlug:string, intent:SearchIntent, r
     {q:`${areaText}에서도 온라인으로 수업할 수 있나요?`,a:`화상 1:1 방식이라면 ${region.name} 내 세부 생활권과 관계없이 일정 조율 후 진행할 수 있습니다. 이동보다 수업 시간과 학습 방식의 적합성을 중심으로 비교할 수 있습니다.`},
     {q:'무료 체험에서 무엇을 확인하면 좋나요?',a:'내가 직접 말한 시간, 오류를 수정하는 방식, 수업 후 복습 방향이 구체적인지 확인해보세요. 현재 수준과 목표에 따라 수업 계획이 달라지는지도 중요한 비교 기준입니다.'}
   ]
-  const faq=Array.from({length:3},(_,i)=>faqPool[(h+i*2)%faqPool.length])
+  const intentFaq: Record<SearchIntent, {q:string;a:string}[]> = {
+    general: Array.from({length:3},(_,i)=>faqPool[(h+i*2)%faqPool.length]),
+    academy: [
+      {q:'영어회화 학원은 왕초보도 바로 등록할 수 있나요?',a:'왕초보반이 있는지뿐 아니라 기본 질문을 이해하고 답하는 현재 수준에 맞춰 반을 배정하는지 확인하는 것이 좋습니다. 수업에서 실제로 말할 시간이 얼마나 주어지는지도 함께 살펴보세요.'},
+      {q:'영어회화 학원은 소수정예 수업이 더 좋은가요?',a:'인원이 적다는 이유만으로 수업 효과가 정해지지는 않습니다. 학습자별 발화 시간, 교정 방식, 질문을 주고받는 활동이 충분한지 비교하는 것이 중요합니다.'},
+      {q:'직장인이 영어회화 학원을 선택할 때 무엇을 확인해야 하나요?',a:'퇴근 후 출석 가능한 시간, 결석 시 보완 방식, 업무에 필요한 회화 주제를 다루는지, 수업 사이에 복습할 자료가 제공되는지를 확인해보세요.'}
+    ],
+    tutoring: [
+      {q:'영어회화 과외는 왕초보에게도 적합한가요?',a:'현재 문장 생성 수준에 맞춰 기본 질문과 짧은 답변부터 연습할 수 있습니다. 다만 수업을 시작하기 전에 교사가 이해력과 발화 수준을 어떻게 확인하는지 살펴보는 것이 좋습니다.'},
+      {q:'영어회화 과외에서는 어떤 피드백을 받아야 하나요?',a:'문법 오류만 지적하는 것보다 실제 대화에서 막힌 이유를 분석하고 수정한 문장을 다시 말하게 하는 과정이 중요합니다. 반복되는 약점을 다음 수업에 반영하는지도 확인해보세요.'},
+      {q:'영어회화 과외 수업 외에는 어떻게 복습하면 좋나요?',a:'수업에서 수정한 문장으로 짧게 녹음하거나 같은 질문에 다시 답하는 연습이 도움이 됩니다. 학습자의 일정에 맞춰 부담 없이 반복할 수 있는 과제를 정하는 편이 좋습니다.'}
+    ]
+  }
+  const faq=intentFaq[intent]
   const h1s=[
     `${region.name} 영어회화${intentName}, 성인 1:1 수업을 고르는 기준`,
     `${region.name} 영어회화${intentName} 시작 전 확인할 1:1 학습 방법`,
@@ -90,7 +120,11 @@ function getEnglishConversationContent(regionSlug:string, intent:SearchIntent, r
     description:`${region.name} 영어회화${intentName}을 찾는 성인·직장인·왕초보를 위한 안내입니다. ${contextLabels[h%contextLabels.length]}을 중심으로 현재 발화 수준, 1:1 피드백과 복습 방법을 확인해보세요.`,
     eyebrow:`${region.name} · 영어회화${intentName}`,
     h1,
-    intro:intros[h%intros.length],
+    intro:intent==='academy'
+      ? `${region.name} 영어회화 학원을 알아볼 때는 거리와 수강료뿐 아니라 반별 수준, 실제 말하기 시간, 피드백 방식을 함께 비교해야 합니다. 특히 왕초보와 직장인은 필요한 연습 내용이 다르므로 자신의 목표에 맞는 수업 구성이 가능한지 확인하는 것이 중요합니다.`
+      : intent==='tutoring'
+      ? `${region.name} 영어회화 과외를 찾는다면 현재 말하기 수준과 영어가 필요한 상황부터 확인하는 것이 좋습니다. 같은 왕초보라도 질문 이해가 어려운 경우와 문장 생성이 느린 경우는 연습 방향이 다릅니다. 개인별 진단과 수업 후 복습 관리가 어떻게 이루어지는지 살펴보세요.`
+      : intros[h%intros.length],
     targetKeywords:[`${region.name} 영어회화${intentName}`,`${region.name} 성인영어회화`,`${region.name} 직장인영어회화`,`${region.name} 1:1 영어회화`],
     sections,
     faq,
