@@ -257,18 +257,16 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
     `${region.name}에서 ${course.name}${intentName}을 알아보는 시점에는 시험·입학·출국·면접처럼 목표 날짜가 정해져 있는 경우가 많습니다. 남은 기간을 먼저 계산한 뒤 가장 큰 점수 손실이나 수행 약점부터 줄이는 방식이 현실적입니다.`
   ]
   const sectionPool:LandingContent['sections']=[
-    {title:`${course.name} 시작 전 현재 수준을 어떻게 확인할까`,paragraphs:[diagnostics[h%diagnostics.length],diagnostics[(h+1)%diagnostics.length]],bullets:rotate(diagnostics,h%diagnostics.length,3)},
-    {title:`${region.name} ${course.name}, 목표를 구체적으로 나누는 방법`,paragraphs:[`${angle.score}처럼 결과 목표가 있다면 그 목표를 실제 수행 항목으로 나눠야 합니다. ${goals[h%goals.length]}처럼 무엇을 할 수 있어야 하는지 정하면 수업에서 확인할 기준도 분명해집니다.`,`현재 잘하는 영역까지 같은 비중으로 반복하기보다 목표 결과에 직접 영향을 주는 약점부터 학습 시간을 배분하는 편이 효율적입니다.`],bullets:rotate(goals,h%goals.length,3)},
-    {title:`실전에서 필요한 ${angle.practice}`,paragraphs:[practice[h%practice.length],practice[(h+1)%practice.length]],bullets:rotate(practice,h%practice.length,3)},
-    {title:`${course.name}${intentName}을 고를 때 피해야 할 준비 방식`,paragraphs:[pitfalls[h%pitfalls.length],pitfalls[(h+1)%pitfalls.length]],bullets:rotate(pitfalls,h%pitfalls.length,3)},
+    {title:`${course.name} 시작 전 현재 수준을 어떻게 확인할까`,paragraphs:[`현재 수준을 확인할 때는 정답 여부뿐 아니라 수행 과정에서 반복되는 어려움을 구분해야 합니다.`],bullets:diagnostics},
+    {title:`${course.name} 목표를 실제 학습 과제로 나누는 방법`,paragraphs:[`${angle.score}처럼 결과 목표가 있다면 그 목표를 실제 수행 항목으로 나눠야 합니다. ${goals[h%goals.length]}처럼 무엇을 할 수 있어야 하는지 정하면 수업에서 확인할 기준도 분명해집니다.`,`현재 잘하는 영역까지 같은 비중으로 반복하기보다 목표 결과에 직접 영향을 주는 약점부터 학습 시간을 배분하는 편이 효율적입니다.`],bullets:rotate(goals,h%goals.length,3)},
+    {title:`실전에서 필요한 ${angle.practice}`,paragraphs:[`학습 목표를 실제 수행으로 연결하려면 설명을 이해하는 단계에서 멈추지 않고 직접 연습한 결과를 점검해야 합니다.`],bullets:practice},
+    {title:`${course.name}${intentName}을 고를 때 피해야 할 준비 방식`,paragraphs:[`학습량을 늘리기 전에 반복되는 비효율적인 준비 방식이 있는지 확인하는 것이 좋습니다.`],bullets:pitfalls},
     {title:'단기 준비와 장기 준비의 우선순위는 다릅니다',paragraphs:[timeline[h%timeline.length],timeline[(h+1)%timeline.length],`남은 기간이 짧을수록 새로운 범위를 넓히기보다 이미 배운 내용을 실제 문제·답변·글에 적용하는 비중을 높이는 편이 좋습니다.`]},
     {title:`${areaText} 생활권에서 화상 1:1을 활용한다면`,paragraphs:[`${region.name} 안에서도 이동 시간과 생활 패턴은 다를 수 있습니다. 실시간 화상 수업은 위치보다 가능한 시간대와 ${angle.practice}을 얼마나 반복할 수 있는지를 기준으로 선택할 수 있습니다.`,`온라인 수업도 일방적인 설명보다 학습자가 직접 말하고 쓰고 풀어본 결과를 기준으로 피드백이 남아야 합니다. 수업 후 무엇을 다시 연습할지까지 확인해보세요.`]},
     {title:`${course.name} 피드백은 '정답 확인'에서 끝나지 않아야 합니다`,paragraphs:[`틀린 이유를 듣는 것과 다음 시도에서 스스로 수정하는 것은 다릅니다. 피드백 후 같은 유형이나 비슷한 질문을 다시 수행해 수정 내용이 실제로 적용되는지 확인해야 합니다.`,`반복 오류는 별도로 기록해 다음 수업의 우선순위에 반영하면 매번 새로운 내용을 넓게 다루는 것보다 학습 효율을 높일 수 있습니다.`]},
     {title:'무료 체험이나 상담에서 확인할 질문',paragraphs:[`현재 수준을 어떤 방식으로 확인하는지, 목표까지 남은 기간에 따라 무엇을 먼저 할지, 수업 중 직접 수행하는 시간이 얼마나 되는지를 물어보는 것이 좋습니다.`,`특히 ${audience}라면 일반적인 커리큘럼 설명보다 자신의 약점에 맞춰 첫 몇 주의 학습 방향이 어떻게 달라지는지 확인해보세요.`],bullets:['현재 수준을 실제 수행으로 확인하는가','목표 날짜와 결과 기준을 반영하는가','피드백 뒤 재시도 과정이 있는가','수업 밖 복습 방법이 구체적인가']}
   ]
-  const order=[0,1,2,3,4,5,6,7]
-  const shift=h%4
-  const shifted=order.slice(shift).concat(order.slice(0,shift))
+  const coreSectionIndexes=[0,1,2,3,4,6]
   const intentSections: Record<SearchIntent, LandingContent['sections'][number]> = {
     general: {
       title:`${course.name} 준비는 목표와 현재 수준의 차이부터 확인하세요`,
@@ -286,7 +284,7 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
       bullets:['현재 수준에 따른 개별 학습 목표','실제 수행 결과를 바탕으로 한 피드백','수업 외 복습과 다음 수업의 약점 재점검']
     }
   }
-  const sections=[intentSections[intent], ...shifted.slice(0,6).map(i=>sectionPool[i])]
+  const sections=[intentSections[intent], ...coreSectionIndexes.map(i=>sectionPool[i])]
   const baseFaq=profile?.faq || []
   const intentFaq: Record<SearchIntent, {q:string;a:string}[]> = {
     general: [],
