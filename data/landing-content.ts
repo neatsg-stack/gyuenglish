@@ -251,15 +251,15 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
   const pitfalls=profile?.pitfalls || ['설명만 듣기보다 직접 수행하고 피드백 후 다시 시도하는 과정이 필요합니다.']
   const timeline=profile?.timeline || ['목표 시점과 현재 수준에 따라 학습 우선순위를 조정합니다.']
   const introVariants=[
-    `${region.name}에서 ${course.name}${intentName ? ` ${intentName}` : ""} 수업을 알아본다면 먼저 학습 목표와 현재 수행 수준의 차이를 확인하는 것이 좋습니다. 학습 목표와 현재 실력을 함께 고려해 우선적으로 보완할 영역을 정하는 것이 중요합니다. ${areaText} 등 생활권과 관계없이 화상 1:1에서는 이동 거리보다 실제 수행량과 피드백 구조를 중심으로 비교할 수 있습니다.`,
+    `${region.name}에서 ${course.name}${intentName ? ` ${intentName}` : ""} 수업을 알아본다면 현재 실력을 실제 과제로 확인하고, 목표에 도달하기 위해 우선 보완해야 할 영역을 정하는 것이 좋습니다. ${areaText} 등 생활권과 관계없이 화상 1:1에서는 이동 거리보다 실제 수행량과 피드백 구조를 중심으로 비교할 수 있습니다.`,
     `${region.name} ${course.name} 준비는 같은 교재를 처음부터 끝까지 보는 방식보다 목표와 약점을 먼저 좁히는 편이 효율적입니다. 특히 ${audience}라면 수업 계획에 필요한 핵심 과제를 정하는 것이 좋습니다. 학습 과제의 예로는 ${goals[h%goals.length]} 등이 있으며, 현재 수준에 따라 우선순위를 조정할 수 있습니다.`,
-    `${course.name}은 '영어를 많이 공부하는 것'과 '필요한 결과를 만드는 것'이 항상 같지는 않습니다. ${region.name}에서 수업을 비교할 때는 현재 수준을 어떻게 진단하고 ${angle.practice}을 얼마나 직접 해보는지 확인해보세요.`,
+    `${course.name}은 '영어를 많이 공부하는 것'과 '필요한 결과를 만드는 것'이 항상 같지는 않습니다. ${region.name}에서 수업을 비교할 때는 현재 수준을 어떻게 진단하고, 학습자가 직접 연습할 기회를 얼마나 확보하는지 확인해보세요.`,
     `${region.name}에서 ${course.name} 관련 수업을 알아보는 시점에는 시험·입학·출국·면접처럼 목표 날짜가 정해져 있는 경우가 많습니다. 남은 기간을 먼저 계산한 뒤 가장 큰 점수 손실이나 수행 약점부터 줄이는 방식이 현실적입니다.`
   ]
   const sectionPool:LandingContent['sections']=[
-    {title:`${course.name} 시작 전 현재 수준을 어떻게 확인할까`,paragraphs:[`현재 수준을 확인할 때는 정답 여부뿐 아니라 수행 과정에서 반복되는 어려움을 구분해야 합니다.`],bullets:diagnostics},
+    {title:`${course.name} 시작 전 현재 수준을 어떻게 확인할까`,paragraphs:[`현재 수준을 진단할 때는 실제 과제를 수행하는 과정에서 나타나는 어려움을 확인해야 합니다. ${diagnostics[h%diagnostics.length]}`],bullets:diagnostics},
     {title:`${course.name} 목표를 실제 학습 과제로 나누는 방법`,paragraphs:[`학습 목표를 실제 연습 과제로 나누고, 수행 결과를 점검하는 과정이 필요합니다. 이때 확인된 약점을 다음 수업에 반영하면 학습의 우선순위도 분명해집니다.`,`현재 잘하는 영역까지 같은 비중으로 반복하기보다 목표 결과에 직접 영향을 주는 약점부터 학습 시간을 배분하는 편이 효율적입니다.`],bullets:rotate(goals,h%goals.length,3)},
-    {title:`실전에서 필요한 ${angle.practice}`,paragraphs:[`학습 목표를 실제 수행으로 연결하려면 설명을 이해하는 단계에서 멈추지 않고 직접 연습한 결과를 점검해야 합니다.`],bullets:practice},
+    {title:`실전에서 필요한 ${angle.practice}`,paragraphs:[`실전에서는 학습 목표에 맞는 과제를 직접 수행하고 결과를 점검해야 합니다. 주요 연습 과제는 '${practice[h%practice.length]}'입니다. 이후 비슷한 과제를 다시 수행하면서 개선된 부분과 반복되는 오류를 구분하는 것이 좋습니다.`],bullets:practice},
     {title:intent === "academy" ? `${course.name} 학원을 선택할 때 피해야 할 방식` : `${course.name} 준비에서 피해야 할 방식`,paragraphs:[`학습량을 늘리기 전에 반복되는 비효율적인 준비 방식이 있는지 확인하는 것이 좋습니다.`],bullets:pitfalls},
     {title:'단기 준비와 장기 준비의 우선순위는 다릅니다',paragraphs:[timeline[h%timeline.length],timeline[(h+1)%timeline.length],`남은 기간이 짧을수록 새로운 범위를 넓히기보다 이미 배운 내용을 실제 문제·답변·글에 적용하는 비중을 높이는 편이 좋습니다.`]},
     {title:`${areaText} 생활권에서 화상 1:1을 활용한다면`,paragraphs:[`${region.name} 안에서도 이동 시간과 생활 패턴은 다를 수 있습니다. 실시간 화상 수업은 위치보다 가능한 시간대와 ${angle.practice}을 얼마나 반복할 수 있는지를 기준으로 선택할 수 있습니다.`,`온라인 수업도 일방적인 설명보다 학습자가 직접 말하고 쓰고 풀어본 결과를 기준으로 피드백이 남아야 합니다. 수업 후 무엇을 다시 연습할지까지 확인해보세요.`]},
