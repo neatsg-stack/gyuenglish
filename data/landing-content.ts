@@ -116,7 +116,7 @@ function getEnglishConversationContent(regionSlug:string, intent:SearchIntent, r
     {href:'/toeic-speaking',label:'토익스피킹'}
   ].filter((item,index,arr)=>arr.findIndex(x=>x.href===item.href)===index).slice(0,12)
   return {
-    title:`${h1} | 규잉글리시`,
+    title:h1,
     description:`${region.name} 영어회화${intentName}을 찾는 성인·직장인·왕초보를 위한 안내입니다. ${contextLabels[h%contextLabels.length]}을 중심으로 현재 발화 수준, 1:1 피드백과 복습 방법을 확인해보세요.`,
     eyebrow:`${region.name} · 영어회화${intentName}`,
     h1,
@@ -239,6 +239,60 @@ const courseProfiles: Record<string, CourseProfile> = {
 
 function rotate<T>(items:T[], start:number, count:number):T[] { return Array.from({length:Math.min(count,items.length)},(_,i)=>items[(start+i)%items.length]) }
 
+const opicRegionalLearning: Record<string, LandingContent['sections'][number]> = {
+  incheon: {
+    title: '오픽 돌발 질문에서 답변이 끊긴다면',
+    paragraphs: [
+      '익숙한 주제에서는 준비한 문장을 자연스럽게 말하지만 예상하지 못한 질문이 나오면 답변을 시작하지 못하는 경우가 있습니다. 이때 새로운 스크립트를 추가하기보다 질문의 핵심을 파악하고 자신이 설명할 수 있는 경험으로 연결하는 연습이 필요합니다.',
+      '예를 들어 여행 중 문제가 생긴 경험을 묻는다면 장소와 상황을 짧게 설명하고, 발생한 문제와 해결 과정, 결과를 순서대로 말해봅니다. 같은 경험을 다른 질문에 맞춰 재구성하는 연습을 하면 암기한 문장에만 의존하는 습관을 줄일 수 있습니다.',
+      '연습할 때는 처음부터 완벽한 문장을 만들려고 멈추기보다 답변 방향을 먼저 정하고 말한 뒤 녹음을 확인합니다. 질문에 맞지 않는 내용, 불필요한 침묵, 반복 표현을 구분해 다음 답변에서 하나씩 수정하는 것이 좋습니다.'
+    ],
+    bullets: [
+      '질문의 핵심을 한 문장으로 정리하기',
+      '문제 상황·대응·결과 순서로 경험 설명하기',
+      '같은 경험을 다른 돌발 질문에 적용하기'
+    ]
+  },
+  cheongju: {
+    title: '오픽 IM3에서 IH를 목표로 할 때 답변을 확장하는 방법',
+    paragraphs: [
+      '짧은 답변을 비교적 정확하게 말하더라도 자신의 경험을 충분히 설명하지 못하면 답변의 내용이 단조로워질 수 있습니다. 목표 등급만 보고 어려운 표현을 추가하기보다 현재 답변에서 어떤 정보가 빠지는지 먼저 확인하는 것이 좋습니다.',
+      '예를 들어 좋아하는 장소를 설명할 때 위치와 특징만 나열했다면 그곳에 자주 가는 이유, 기억에 남는 경험, 이전과 달라진 점을 덧붙여 볼 수 있습니다. 문장을 무조건 길게 만드는 것이 아니라 질문에 맞는 구체적인 정보를 추가하는 연습입니다.',
+      '답변을 녹음한 뒤 이유 설명이 빠졌는지, 같은 형용사를 반복하는지, 과거 경험을 현재 시제로만 설명하는지 확인합니다. 이후 같은 질문에 다시 답하면서 내용의 연결과 표현의 안정성을 함께 점검합니다.'
+    ],
+    bullets: [
+      '짧은 답변에 이유와 실제 경험 추가하기',
+      '장소·사람·활동을 구체적으로 설명하기',
+      '녹음 후 시제와 연결 표현 재점검하기'
+    ]
+  },
+  busan: {
+    title: '오픽 경험 설명에서 시제와 구체성이 부족하다면',
+    paragraphs: [
+      '오픽에서 경험을 묻는 질문은 단순히 과거형 문장을 몇 개 말하는 것으로 끝나지 않습니다. 언제 어떤 상황이 있었는지, 왜 기억에 남는지, 그 이후 무엇이 달라졌는지까지 연결할 수 있어야 자신의 이야기가 분명해집니다.',
+      '예를 들어 최근 방문한 장소에 대해 말할 때는 방문 시점과 동행인, 당시 했던 활동, 예상과 달랐던 점을 순서대로 정리해봅니다. 현재의 일반적인 습관과 과거의 특정 경험을 구분해 설명하면 시제 사용도 자연스럽게 점검할 수 있습니다.',
+      '연습 후에는 문법 오류만 표시하지 말고 듣는 사람이 상황을 이해하는 데 필요한 정보가 충분했는지 확인합니다. 빠진 정보를 보완해 다시 말하는 과정이 단순한 문장 암기보다 중요합니다.'
+    ],
+    bullets: [
+      '현재의 습관과 과거의 경험 구분하기',
+      '언제·누구와·무엇을 했는지 구체화하기',
+      '경험의 이유와 결과까지 연결하기'
+    ]
+  },
+  seongnam: {
+    title: '오픽 녹음 피드백으로 반복 표현과 침묵 줄이기',
+    paragraphs: [
+      '연습할 때는 잘 말했다고 생각했지만 녹음을 들어보면 같은 표현을 여러 번 반복하거나 질문을 받은 뒤 오래 멈추는 경우가 있습니다. 이러한 문제는 새로운 단어를 외우는 것만으로 해결하기 어려우므로 실제 답변을 기록해 확인하는 과정이 필요합니다.',
+      '먼저 익숙한 질문과 낯선 질문에 각각 답변을 녹음합니다. 시작까지 걸리는 시간, 의미 없이 반복한 표현, 설명이 끊긴 지점을 구분해 기록하고 한 번에 한 가지 문제를 집중적으로 수정해봅니다.',
+      '수정한 답변을 그대로 암기하기보다 비슷한 질문으로 바꿔 다시 녹음합니다. 연습 전후를 비교하면 표현이 다양해졌는지, 불필요한 침묵이 줄었는지, 답변의 흐름이 안정되었는지 확인하기 쉽습니다.'
+    ],
+    bullets: [
+      '익숙한 질문과 돌발 질문을 각각 녹음하기',
+      '침묵·반복 표현·문장 연결 문제 분류하기',
+      '질문을 바꿔 재녹음하고 개선 여부 확인하기'
+    ]
+  }
+}
 function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:SearchIntent, region:NonNullable<ReturnType<typeof getRegion>>, course:NonNullable<ReturnType<typeof getCourse>>, angle:NonNullable<(typeof courseAngles)[string]>): LandingContent {
   const profile=courseProfiles[courseSlug]
   const h=hashText(`${regionSlug}:${courseSlug}:${intent}`)
@@ -328,8 +382,13 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
   }
   const sections = [
     intentSections[intent],
+    ...(courseSlug === 'opic' && intent === 'general' && opicRegionalLearning[regionSlug]
+      ? [opicRegionalLearning[regionSlug]]
+      : []),
     ...(intent === 'general' ? [] : intentDetailSections[intent]),
-    ...intentCoreIndexes[intent].map(i => sectionPool[i])
+    ...(courseSlug === 'opic' && intent === 'general' && opicRegionalLearning[regionSlug]
+      ? [0, 2, 4, 6].map(i => sectionPool[i])
+      : intentCoreIndexes[intent].map(i => sectionPool[i]))
   ]
   const baseFaq=profile?.faq || []
   const intentFaq: Record<SearchIntent, {q:string;a:string}[]> = {
@@ -369,7 +428,7 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
     {href:'/english-writing',label:'영어 라이팅'}
   ].filter((item,index,arr)=>arr.findIndex(x=>x.href===item.href)===index).slice(0,12)
   return {
-    title:`${h1} | 규잉글리시`,
+    title:h1,
     description:`${region.name} ${course.name}${intentName} 준비 방법을 현재 수준, ${angle.score}, ${angle.practice} 기준으로 정리했습니다. ${areaText} 생활권에서 1:1 화상 수업을 비교할 때 확인할 항목도 함께 살펴보세요.`,
     eyebrow:`${region.name} · ${course.name}${intentName}`,
     h1,
