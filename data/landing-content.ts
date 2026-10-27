@@ -269,10 +269,39 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
   const order=[0,1,2,3,4,5,6,7]
   const shift=h%4
   const shifted=order.slice(shift).concat(order.slice(0,shift))
-  const sections=shifted.slice(0,6).map(i=>sectionPool[i])
+  const intentSections: Record<SearchIntent, LandingContent['sections'][number]> = {
+    general: {
+      title:`${course.name} 준비는 목표와 현재 수준의 차이부터 확인하세요`,
+      paragraphs:[`${angle.score}이라는 결과 목표가 있더라도 출발점은 학습자마다 다릅니다. 먼저 현재 수행 수준을 확인하고 ${angle.practice}에서 반복되는 약점을 구분해야 학습 시간을 효율적으로 배분할 수 있습니다.`,`준비 기간이 짧다면 점수나 수행 결과에 직접 영향을 주는 부분부터, 기간이 충분하다면 기초 이해와 실전 적용을 함께 보완하는 방향으로 계획을 세워보세요.`],
+      bullets:['현재 수준과 목표 결과의 차이 확인','취약 영역별 연습 우선순위 설정','남은 기간과 복습 가능 시간을 고려한 계획']
+    },
+    academy: {
+      title:`${course.name} 학원 선택 시 커리큘럼보다 먼저 확인할 기준`,
+      paragraphs:[`${course.name} 학원을 비교할 때는 목표가 비슷한 학습자끼리 수업을 듣는지, 현재 수준에 맞는 반이나 과정이 있는지 확인하는 것이 좋습니다. 같은 진도를 따라가더라도 ${angle.practice}을 직접 연습하는 기회는 수업 방식에 따라 달라질 수 있습니다.`,`상담에서는 진단 방식, 과제와 피드백의 범위, 목표 일정에 맞춘 과정 운영 여부를 구체적으로 물어보세요. 특히 취약 영역이 뚜렷하다면 공통 진도 외에 개인별 보완이 가능한지도 중요한 판단 기준입니다.`],
+      bullets:['레벨과 목표에 맞는 반 구성','실전 연습량과 개별 피드백 방식','과제 점검과 목표 일정에 맞는 운영']
+    },
+    tutoring: {
+      title:`${course.name} 과외는 개인별 약점과 목표에 맞는 수업 설계가 핵심입니다`,
+      paragraphs:[`${course.name} 과외를 선택한다면 정해진 교재를 얼마나 빨리 끝내는지보다 현재 약점을 어떻게 진단하고 수업에 반영하는지 살펴보세요. ${angle.practice}을 직접 수행한 결과를 바탕으로 학습 순서를 조정하는 방식이 중요합니다.`,`수업에서 받은 피드백을 다음 연습에 적용하고 반복되는 오류를 다시 점검하는 과정도 필요합니다. 목표 날짜와 개인 일정에 맞춰 수업 횟수뿐 아니라 수업 사이 복습량까지 설계할 수 있는지 확인해보세요.`],
+      bullets:['현재 수준에 따른 개별 학습 목표','실제 수행 결과를 바탕으로 한 피드백','수업 외 복습과 다음 수업의 약점 재점검']
+    }
+  }
+  const sections=[intentSections[intent], ...shifted.slice(0,6).map(i=>sectionPool[i])]
   const baseFaq=profile?.faq || []
+  const intentFaq: Record<SearchIntent, {q:string;a:string}[]> = {
+    general: [],
+    academy: [
+      {q:`${course.name} 학원은 어떤 기준으로 선택해야 하나요?`,a:`현재 수준과 ${angle.score}이라는 목표에 맞는 과정이 있는지 확인하세요. 특히 ${angle.practice}을 직접 연습할 기회와 과제·피드백 방식까지 비교하는 것이 좋습니다.`},
+      {q:'학원 진도를 따라가기 어렵다면 어떻게 해야 하나요?',a:'어느 영역에서 어려움이 발생하는지 먼저 확인해야 합니다. 기초 이해가 부족한지, 실전 적용이 어려운지 구분한 뒤 보충 학습이나 수준에 맞는 과정 조정을 검토할 수 있습니다.'}
+    ],
+    tutoring: [
+      {q:`${course.name} 과외에서는 학습 계획을 어떻게 정하나요?`,a:`현재 수행 수준과 ${angle.score}이라는 목표, 남은 기간을 함께 확인한 뒤 우선순위를 정하는 것이 좋습니다. ${angle.practice}에서 나타나는 반복적인 약점을 중심으로 수업 내용을 조정할 수 있습니다.`},
+      {q:'과외 수업이 없는 날에는 어떻게 복습해야 하나요?',a:'수업 중 받은 피드백을 바탕으로 같은 유형을 다시 수행하고 반복 오류를 기록하는 것이 좋습니다. 다음 수업에서 수정한 내용을 실제로 적용할 수 있는지 확인하면 도움이 됩니다.'}
+    ]
+  }
   const faq=[
-    ...(baseFaq.length?rotate(baseFaq,h%baseFaq.length,2):[]),
+    ...(intent==='general' && baseFaq.length?rotate(baseFaq,h%baseFaq.length,2):[]),
+    ...intentFaq[intent],
     {q:`${region.name}에서 ${course.name} 화상 1:1 수업도 가능한가요?`,a:`가능합니다. 화상 방식이라면 ${areaText} 등 세부 생활권과 관계없이 일정 조율 후 진행할 수 있습니다. 위치보다 목표 진단과 실제 수행·피드백 구조를 함께 비교하는 것이 좋습니다.`},
     {q:`${course.name} 준비에서 수업 횟수는 어떻게 정하나요?`,a:'목표 날짜, 현재 수준, 개인 복습 가능 시간을 함께 보고 정하는 편이 좋습니다. 단기간일수록 수업 횟수만 늘리기보다 수업 사이 재연습까지 가능한지 확인해야 합니다.'}
   ].slice(0,4)
@@ -300,7 +329,11 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
     description:`${region.name} ${course.name}${intentName} 준비 방법을 현재 수준, ${angle.score}, ${angle.practice} 기준으로 정리했습니다. ${areaText} 생활권에서 1:1 화상 수업을 비교할 때 확인할 항목도 함께 살펴보세요.`,
     eyebrow:`${region.name} · ${course.name}${intentName}`,
     h1,
-    intro:introVariants[h%introVariants.length],
+    intro:intent==='academy'
+      ? `${region.name}에서 ${course.name} 학원을 알아본다면 목표에 맞는 과정이 있는지뿐 아니라 현재 수준에 적합한 반 구성과 실제 연습량을 확인하는 것이 좋습니다. ${angle.practice}을 직접 수행할 기회가 충분한지, 개별 피드백과 과제 점검은 어떻게 이루어지는지 비교해보세요.`
+      : intent==='tutoring'
+      ? `${region.name}에서 ${course.name} 과외를 찾는다면 ${angle.score}과 현재 수준의 차이를 먼저 진단하는 것이 중요합니다. ${angle.practice}에서 반복되는 약점을 확인하고, 목표 일정에 맞춰 학습 순서와 복습량을 조정할 수 있는지 살펴보세요.`
+      : introVariants[h%introVariants.length],
     targetKeywords:[`${region.name} ${course.name}${intentName}`,`${region.name} ${angle.second.split('·')[0]}`,`${region.name} ${angle.second.split('·')[1]||'1:1 수업'}`,angle.score],
     sections,
     faq,
