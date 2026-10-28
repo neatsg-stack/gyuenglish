@@ -193,8 +193,8 @@ export default function CourseHub({ slug }: { slug: string }) {
               <h2>지역별 {course.name} 학습 정보</h2>
             </div>
 
-            <div className="region-link-grid">
-              {pages.map((region) => (
+            <div className="region-link-grid region-link-preview">
+              {pages.slice(0, 20).map((region) => (
                 <Link
                   className="mini-link"
                   href={`/${region!.slug}/${slug}`}
@@ -205,6 +205,24 @@ export default function CourseHub({ slug }: { slug: string }) {
                 </Link>
               ))}
             </div>
+
+            {pages.length > 20 && (
+              <details className="region-link-details">
+                <summary>전체 지역 보기 <span>+{pages.length - 20}</span></summary>
+                <div className="region-link-grid region-link-rest">
+                  {pages.slice(20).map((region) => (
+                    <Link
+                      className="mini-link"
+                      href={`/${region!.slug}/${slug}`}
+                      key={region!.slug}
+                    >
+                      {region!.name} {course.name}
+                      <span>→</span>
+                    </Link>
+                  ))}
+                </div>
+              </details>
+            )}
           </section>
         )}
       </article>

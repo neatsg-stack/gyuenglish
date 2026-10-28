@@ -979,3 +979,125 @@
     padding: 34px 26px;
   }
 }
+
+/* STEP189: course region links + resilient consultation CTA */
+.seo-tail .region-link-details {
+  margin-top: 14px;
+}
+
+.seo-tail .region-link-details > summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #dbe3ee;
+  border-radius: 12px;
+  background: #fff;
+  color: #172033;
+  font-weight: 850;
+  cursor: pointer;
+  list-style: none;
+}
+
+.seo-tail .region-link-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.seo-tail .region-link-details > summary span {
+  color: #2563eb;
+  font-size: .86rem;
+}
+
+.seo-tail .region-link-rest {
+  margin-top: 12px;
+}
+
+.consultation-cta {
+  grid-template-columns: minmax(280px, 1fr) minmax(300px, auto);
+}
+
+.consultation-content {
+  min-width: 0;
+}
+
+.consultation-cta h2 {
+  max-width: none;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
+.consultation-action {
+  min-width: 300px;
+}
+
+.consultation-phone {
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .consultation-cta {
+    grid-template-columns: 1fr;
+  }
+
+  .consultation-action {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .seo-tail .region-link-preview,
+  .seo-tail .region-link-rest {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .consultation-cta h2 {
+    word-break: keep-all;
+  }
+}
+
+@media (max-width: 380px) {
+  .seo-tail .region-link-preview,
+  .seo-tail .region-link-rest {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1100px) {
+  .consultation-cta {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .consultation-action {
+    min-width: 0;
+    padding: 20px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(255,255,255,.22);
+  }
+
+  .consultation-phone {
+    max-width: 100%;
+    font-size: clamp(2rem, 5vw, 3rem);
+    white-space: nowrap;
+  }
+}
+
+.consultation-cta:not(.compact-consultation-cta) {
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+.consultation-cta:not(.compact-consultation-cta) .consultation-action {
+  min-width: 0;
+  padding: 20px 0 0;
+  border-left: 0;
+  border-top: 1px solid rgba(255,255,255,.22);
+}
+
+.consultation-cta:not(.compact-consultation-cta) .consultation-phone {
+  max-width: 100%;
+  font-size: clamp(2rem, 5vw, 3rem);
+  white-space: nowrap;
+}
