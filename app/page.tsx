@@ -306,13 +306,26 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="region-link-grid">
-          {regions.map((region) => (
+        <div className="region-link-grid region-link-preview">
+          {regions.slice(0, 20).map((region) => (
             <Link className="mini-link" href={`/${region.slug}`} key={region.slug}>
               {region.name} 영어과외 <span>→</span>
             </Link>
           ))}
         </div>
+
+        {regions.length > 20 && (
+          <details className="region-link-details">
+            <summary>전체 지역 보기 <span>+{regions.length - 20}</span></summary>
+          <div className="region-link-grid region-link-rest">
+            {regions.slice(20).map((region) => (
+              <Link className="mini-link" href={`/${region.slug}`} key={region.slug}>
+                {region.name} 영어과외 <span>→</span>
+              </Link>
+            ))}
+          </div>
+          </details>
+        )}
       </section>
 
       <section id="trial" className="home-final-cta">
