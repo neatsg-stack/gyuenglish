@@ -12,8 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const fixed = ['', '/guide', '/guide/opic-ih', '/guide/toeic-speaking-150', '/guide/ielts-65', '/guide/ielts-writing', '/guide/toefl-writing', '/guide/gtelp-65', '/guide/beginner-english', '/guide/international-school-interview', '/guide/international-school-writing', '/guide/study-abroad-english', ...courses.map(c => `/${c.slug}`), '/ielts/writing', '/ielts/speaking', '/toefl/writing', '/toefl/speaking']
 
   const landing = expandedLandingPages().filter(page => {
-    const { courseSlug } = parseLandingSlug(page.course)
-    return isLandingIndexable(page.region, courseSlug)
+    const { courseSlug, intent } = parseLandingSlug(page.course)
+    return intent === 'general' && isLandingIndexable(page.region, courseSlug)
   })
 
   return [

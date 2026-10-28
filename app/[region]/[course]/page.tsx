@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const region = getRegion(regionSlug); const course = getCourse(courseSlug)
   const content = getLandingContent(regionSlug, courseSlug, intent)
   if (!region || !course || !isLandingPage(regionSlug, landingSlug) || !content) return {}
-  const indexable = isLandingIndexable(regionSlug, courseSlug)
+  const indexable = intent === 'general' && isLandingIndexable(regionSlug, courseSlug)
   return { title:content.title, description:content.description, alternates:{canonical:`/${region.slug}/${landingSlug}`}, robots:{index:indexable,follow:true}, openGraph:{title:content.title,description:content.description,url:`${SITE_URL}/${region.slug}/${landingSlug}`,type:'article'} }
 }
 

@@ -87,17 +87,17 @@ export default async function RegionPage({ params }: Props) {
 
       <header className="region-text-hero">
         <nav className="breadcrumb" aria-label="breadcrumb">
-          <Link href="/">?</Link> ? {region.name}
+          <Link href="/">홈</Link> › {region.name}
         </nav>
         <p className="eyebrow">1:1 ENGLISH LEARNING</p>
-        <h1>{region.name} ????,<br /><span>???? ?? ?? ??? ?????.</span></h1>
+        <h1>{region.name} 영어회화,<br /><span>현재 수준부터 맞는 방향을 찾습니다.</span></h1>
         <p>
-          ??? ?? ?????? ?? ? ??? ??? ????
-          ????? ?? ????? ????? ???? ??? ???? ???? ?? ?????.
+          영어를 오래 공부했어도 실제로 말할 때 막히는 지점은 사람마다 다릅니다.
+          현재 수준과 필요한 영어를 먼저 확인하고 목표에 맞는 학습 방향을 정합니다.
         </p>
         <div className="lead-actions">
-          <a className="lead-primary" href="tel:01096218833">010-9621-8833 ??</a>
-          <a className="lead-secondary" href="#courses">??? ?? ??</a>
+          <a className="lead-primary" href="tel:01096218833">010-9621-8833 상담</a>
+          <a className="lead-secondary" href="#courses">영어 과정 보기</a>
         </div>
       </header>
 

@@ -1,4 +1,5 @@
 import { getRegion } from './regions'
+import { getIndexableFocusContent } from './indexable-focus-content'
 import { getCourse } from './courses'
 import { isBaseLandingPage } from './landing-pages'
 import type { SearchIntent } from './search-intents'
@@ -590,6 +591,14 @@ const examLearningScenarios: Record<string, LandingContent['sections']> = {
 }
 
 function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:SearchIntent, region:NonNullable<ReturnType<typeof getRegion>>, course:NonNullable<ReturnType<typeof getCourse>>, angle:NonNullable<(typeof courseAngles)[string]>): LandingContent {
+  const indexableFocus =
+    intent === 'general'
+      ? getIndexableFocusContent(
+          regionSlug,
+          courseSlug
+        )
+      : undefined
+
   const profile=courseProfiles[courseSlug]
   const h=hashText(`${regionSlug}:${courseSlug}:${intent}`)
   const intentName=intent==='academy'?'학원':intent==='tutoring'?'과외':''
@@ -753,22 +762,24 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
   ]
 
   const sections: LandingContent['sections'] =
-    intent === 'general'
-      ? [
-          intentSections.general,
-          ...(generalKnowledgeSections.length
-            ? generalKnowledgeSections
-            : fallbackGeneralSections)
-        ]
-      : [
-          intentSections[intent],
-          ...intentDetailSections[intent],
-          ...(intentKnowledgeSections.length
-            ? intentKnowledgeSections
-            : fallbackIntentSections.slice(0, 2)),
-          sectionPool[4],
-          sectionPool[6]
-        ]
+    indexableFocus
+      ? indexableFocus.sections
+      : intent === 'general'
+        ? [
+            intentSections.general,
+            ...(generalKnowledgeSections.length
+              ? generalKnowledgeSections
+              : fallbackGeneralSections)
+          ]
+        : [
+            intentSections[intent],
+            ...intentDetailSections[intent],
+            ...(intentKnowledgeSections.length
+              ? intentKnowledgeSections
+              : fallbackIntentSections.slice(0, 2)),
+            sectionPool[4],
+            sectionPool[6]
+          ]
 
   const baseFaq=profile?.faq || []
   const intentFaq: Record<SearchIntent, {q:string;a:string}[]> = {
@@ -808,11 +819,11 @@ function getCourseSpecificContent(regionSlug:string, courseSlug:string, intent:S
     {href:'/english-writing',label:'영어 라이팅'}
   ].filter((item,index,arr)=>arr.findIndex(x=>x.href===item.href)===index).slice(0,12)
   return {
-    title:h1,
-    description:`${region.name} ${course.name}${intentName} 준비 방법을 현재 수준, ${angle.score}, ${angle.practice} 기준으로 정리했습니다. ${areaText} 생활권에서 1:1 화상 수업을 비교할 때 확인할 항목도 함께 살펴보세요.`,
-    eyebrow:`${region.name} · ${course.name}${intentName}`,
-    h1,
-    intro:intent==='academy'
+    title:indexableFocus?.h1 || h1,
+    description:indexableFocus?.description || `${region.name} ${course.name}${intentName} 준비 방법을 현재 수준, ${angle.score}, ${angle.practice} 기준으로 정리했습니다. ${areaText} 생활권에서 1:1 화상 수업을 비교할 때 확인할 항목도 함께 살펴보세요.`,
+    eyebrow:indexableFocus?.eyebrow || `${region.name} ? ${course.name}${intentName}`,
+    h1:indexableFocus?.h1 || h1,
+    intro:indexableFocus?.intro || intent==='academy'
       ? `${region.name}에서 ${course.name} 학원을 알아본다면 목표에 맞는 과정이 있는지뿐 아니라 현재 수준에 적합한 반 구성과 실제 연습량을 확인하는 것이 좋습니다. ${angle.practice}을 직접 수행할 기회가 충분한지, 개별 피드백과 과제 점검은 어떻게 이루어지는지 비교해보세요.`
       : intent==='tutoring'
       ? `${region.name}에서 ${course.name} 과외를 찾는다면 ${angle.score}과 현재 수준의 차이를 먼저 진단하는 것이 중요합니다. ${angle.practice}에서 반복되는 약점을 확인하고, 목표 일정에 맞춰 학습 순서와 복습량을 조정할 수 있는지 살펴보세요.`
